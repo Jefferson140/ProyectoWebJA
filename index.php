@@ -218,7 +218,7 @@ $alquileres = cargar_propiedades('alquiler');
             <a href="propiedades/listar.php?tipo=venta" class="bg-blue-900 text-white px-6 py-2 rounded font-bold shadow hover:bg-blue-800 transition">Ver más propiedades en venta</a>
         </div>
     </section>
-    
+    <!-- Propiedades en Alquiler -->
     <section style="background-color: <?= $color_principal ?>; color: #fff;" class="py-12">
         <div class="max-w-6xl mx-auto">
             <h2 class="text-2xl font-bold mb-8 text-center">PROPIEDADES EN ALQUILER</h2>
