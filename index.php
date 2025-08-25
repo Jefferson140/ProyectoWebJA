@@ -319,7 +319,7 @@ $alquileres = cargar_propiedades('alquiler');
         </div>
     </div>
         <div class="w-full bg-blue-900 py-2 mt-8">
-            <div class="text-center text-white font-bold italic">Derechos Reservados 2024</div>
+            <div class="text-center text-white font-bold italic">Derechos Reservados 2025</div>
         </div>
     </footer>
 </body>
