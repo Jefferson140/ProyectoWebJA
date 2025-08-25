@@ -123,19 +123,26 @@ $alquileres = cargar_propiedades('alquiler');
     <section id="quienes" class="bg-white py-12">
         <div class="max-w-5xl mx-auto flex flex-col md:flex-row items-center gap-8">
             <div class="flex-1">
-                <h2 class="text-2xl font-bold mb-2 text-blue-900">QUIENES SOMOS</h2>
-                <p class="text-gray-700 mb-4"><?= nl2br(htmlspecialchars($info_quienes)) ?></p>
+                <h2 class="text-2xl font-bold mb-2 text-blue-900 text-center">QUIENES SOMOS</h2>
+                <p class="text-gray-700 mb-4 text-center md:text-left" style="font-size:1.1rem;">
+                    Somos una empresa dedicada a brindar soluciones inmobiliarias en Guanacaste. Nuestro equipo está comprometido con la excelencia y la satisfacción de nuestros clientes, ofreciendo asesoría profesional y atención personalizada para encontrar la propiedad ideal.
+                </p>
+                <div class="flex justify-center md:justify-start mb-2">
+                    <a href="#" aria-label="Facebook" class="mr-2">
+                        <svg fill="#3b5998" viewBox="0 0 24 24" class="h-7 w-7"><circle cx="12" cy="12" r="12" fill="#3b5998"/><path fill="#fff" d="M13.5 12H12v5h-2v-5H8v-2h2V8.5A2.5 2.5 0 0 1 12.5 6h1.5v2h-1c-.28 0-.5.22-.5.5V10h2l-.5 2z"/></svg>
+                    </a>
+                </div>
             </div>
             <div class="flex-1 flex justify-center">
                 <?php
-                $img_quienes = !empty($config['imagen_quienes_somos']) ? $config['imagen_quienes_somos'] : 'img/quienes.jpg';
+                $img_quienes = !empty($config['imagen_quienes_somos']) ? $config['imagen_quienes_somos'] : 'img/quienesSomos.png';
                 if (!empty($config['imagen_quienes_somos']) && file_exists($img_quienes)) {
                 ?>
                     <img src="<?= $img_quienes ?>" alt="Quienes Somos" class="rounded shadow-lg h-44 w-80 object-cover">
                 <?php
                 } else {
                 ?>
-                    <img src="img/quienes.jpg" alt="Quienes Somos" class="rounded shadow-lg h-44 w-80 object-cover">
+                    <img src="img/quienesSomos.png" alt="Quienes Somos" class="rounded shadow-lg h-44 w-80 object-cover">
                 <?php
                 }
                 ?>
@@ -267,16 +274,16 @@ $alquileres = cargar_propiedades('alquiler');
         <div class="flex flex-col justify-center">
             <div class="flex items-center mb-2">
                 <svg class="h-6 w-6 mr-2 text-black inline" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5S10.62 6.5 12 6.5s2.5 1.12 2.5 2.5S13.38 11.5 12 11.5z"/></svg>
-                <span class="font-bold">Dirección:</span> <span class="ml-2"><?= htmlspecialchars($direccion) ?></span>
+                <span class="font-bold">Dirección: Cañas Guanacaste, 100 mts Este Parque Cañas </span> <span class="ml-2"><?= htmlspecialchars($direccion) ?></span>
             </div>
             
             <div class="flex items-center mb-2">
                 <svg class="h-6 w-6 mr-2 text-black inline" fill="currentColor" viewBox="0 0 24 24"><path d="M6.62 10.79a15.053 15.053 0 006.59 6.59l2.2-2.2a1 1 0 011.11-.21c1.21.49 2.53.76 3.88.76a1 1 0 011 1v3.5a1 1 0 01-1 1C5.92 22 2 18.08 2 13.5a1 1 0 011-1h3.5a1 1 0 011 1c0 1.35.27 2.67.76 3.88a1 1 0 01-.21 1.11l-2.2 2.2z"/></svg>
-                <span class="font-bold">Teléfono:</span> <span class="ml-2"><?= htmlspecialchars($telefono) ?></span>
+                <span class="font-bold">Teléfono: 8890-2030</span> <span class="ml-2"><?= htmlspecialchars($telefono) ?></span>
             </div>
             <div class="flex items-center mb-2">
                 <svg class="h-6 w-6 mr-2 text-black inline" fill="currentColor" viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 2v.01L12 13 4 6.01V6h16zM4 18V8.99l8 7.99 8-7.99V18H4z"/></svg>
-                <span class="font-bold">Email:</span> <span class="ml-2"><?= htmlspecialchars($email) ?></span>
+                <span class="font-bold">Email: info@utnrealstate.com</span> <span class="ml-2"><?= htmlspecialchars($email) ?></span>
             </div>
         </div>
         <div class="flex flex-col items-center justify-center">
@@ -319,7 +326,7 @@ $alquileres = cargar_propiedades('alquiler');
         </div>
     </div>
         <div class="w-full bg-blue-900 py-2 mt-8">
-            <div class="text-center text-white font-bold italic">Derechos Reservados 2025</div>
+            <div class="text-center text-white font-bold italic">Derechos Reservados 2024</div>
         </div>
     </footer>
 </body>

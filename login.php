@@ -40,46 +40,74 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login - UTN Solutions Real State</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="css/custom.css">
 </head>
 
 <?php
-// Colores desde la configuración principal
 $color_principal = isset($color_principal) ? $color_principal : '#25344b';
 $color_secundario = isset($color_secundario) ? $color_secundario : '#ffe600';
 ?>
-<body class="min-h-screen flex items-center justify-center" style="background: linear-gradient(135deg, <?php echo $color_principal; ?> 60%, <?php echo $color_secundario; ?> 100%);">
+<body class="min-h-screen flex items-center justify-center" 
+      style="background: linear-gradient(135deg, <?php echo $color_principal; ?> 60%, <?php echo $color_secundario; ?> 100%);">
+
     <div class="bg-white/90 rounded-2xl shadow-2xl p-10 w-full max-w-md backdrop-blur-md border border-[<?php echo $color_secundario; ?>] animate-fade-in">
-        <div class="flex items-center gap-3 mb-8 justify-center">
-            <img src="img/logo.png" alt="Logo" class="h-12 drop-shadow-lg">
-            <span class="font-extrabold text-2xl" style="color: <?php echo $color_principal; ?>;">UTN SOLUTIONS<br><span style="color: <?php echo $color_secundario; ?>;">REAL STATE</span></span>
+        
+        <!-- Logo + Título -->
+        <div class="flex flex-col items-center mb-8 text-center">
+            <img src="img/logo.png" alt="Logo" class="h-20 drop-shadow-lg mb-3">
+            <h1 class="text-4xl font-extrabold bg-gradient-to-r from-black via-gray-700 to-black bg-clip-text text-transparent drop-shadow-lg">
+                UTN REAL STATE
+            </h1>
         </div>
-    <h2 class="text-3xl font-extrabold mb-6 text-center" style="color: <?php echo $color_principal; ?>;">Iniciar Sesión</h2>
-        <?php if($error): ?><div class="bg-red-100 text-red-700 p-3 mb-4 rounded-lg text-center shadow"><?= $error ?></div><?php endif; ?>
+
+        <!-- Subtítulo -->
+        <h2 class="text-2xl font-bold mb-6 text-center" style="color: <?php echo $color_principal; ?>;">
+            Iniciar Sesión
+        </h2>
+
+        <!-- Errores -->
+        <?php if($error): ?>
+            <div class="bg-red-100 text-red-700 p-3 mb-4 rounded-lg text-center shadow">
+                <?= $error ?>
+            </div>
+        <?php endif; ?>
+
+        <!-- Formulario -->
         <form method="post" class="space-y-6">
+            <!-- Usuario -->
             <div class="relative">
-                <label class="block mb-2 font-semibold" style="color: <?php echo $color_principal; ?>;">Usuario</label>
-                <span class="absolute left-3 top-1/2 transform -translate-y-1/2" style="color: <?php echo $color_secundario; ?>;">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.121 17.804A9.001 9.001 0 0112 15c2.21 0 4.21.805 5.879 2.146M15 11a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
-                </span>
-                <input type="text" name="usuario" class="w-full pl-10 pr-3 py-2 border-2 rounded-lg focus:outline-none focus:ring-2 transition-all duration-200" style="border-color: <?php echo $color_secundario; ?>;" required>
+                <label class="block mb-2 font-semibold text-black">Usuario</label>
+                <input type="text" name="usuario" 
+                       class="w-full pl-3 pr-3 py-3 border-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-400 text-black placeholder-gray-600 bg-gray-100"
+                       placeholder="Ingrese su usuario"
+                       style="border-color: <?php echo $color_secundario; ?>;"
+                       required>
             </div>
+
+            <!-- Contraseña -->
             <div class="relative">
-                <label class="block mb-2 font-semibold" style="color: <?php echo $color_principal; ?>;">Contraseña</label>
-                <span class="absolute left-3 top-1/2 transform -translate-y-1/2" style="color: <?php echo $color_secundario; ?>;">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 11c1.104 0 2-.896 2-2V7a2 2 0 10-4 0v2c0 1.104.896 2 2 2zm6 2v5a2 2 0 01-2 2H8a2 2 0 01-2-2v-5a6 6 0 1112 0z" /></svg>
-                </span>
-                <input type="password" name="contrasena" class="w-full pl-10 pr-3 py-2 border-2 rounded-lg focus:outline-none focus:ring-2 transition-all duration-200" style="border-color: <?php echo $color_secundario; ?>;" required>
+                <label class="block mb-2 font-semibold text-black">Contraseña</label>
+                <input type="password" name="contrasena" 
+                       class="w-full pl-3 pr-3 py-3 border-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-400 text-black placeholder-gray-600 bg-gray-100"
+                       placeholder="Ingrese su contraseña"
+                       style="border-color: <?php echo $color_secundario; ?>;"
+                       required>
             </div>
-            <button type="submit" class="w-full font-bold shadow-lg px-6 py-3 rounded-lg transition-transform duration-200" style="background: linear-gradient(90deg, <?php echo $color_secundario; ?> 0%, <?php echo $color_principal; ?> 100%); color: #25344b;">Ingresar</button>
+
+            <!-- Botón -->
+            <button type="submit" 
+                    class="w-full font-bold shadow-lg px-6 py-3 rounded-lg transition-transform duration-200 hover:scale-105"
+                    style="background: linear-gradient(90deg, <?php echo $color_secundario; ?> 0%, <?php echo $color_principal; ?> 100%); color: #fff;">
+                Ingresar
+            </button>
         </form>
-    <a href="index.php" class="block text-center mt-6 font-semibold hover:underline" style="color: <?php echo $color_principal; ?>;">Volver al inicio</a>
     </div>
+
     <style>
-        @keyframes fade-in { from { opacity: 0; transform: translateY(20px);} to { opacity: 1; transform: none; } }
+        @keyframes fade-in { 
+            from { opacity: 0; transform: translateY(20px);} 
+            to { opacity: 1; transform: none; } 
+        }
         .animate-fade-in { animation: fade-in 0.8s cubic-bezier(.4,0,.2,1) both; }
     </style>
-
-    
 </body>
 </html>
