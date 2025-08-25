@@ -1,7 +1,7 @@
 <?php
 require_once '../includes/session.php';
 require_once '../includes/functions.php';
-if (!es_admin()) redirigir('../login.php');
+proteger_ruta_admin();
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -16,19 +16,24 @@ if (!es_admin()) redirigir('../login.php');
         <span class="font-bold text-lg">Panel de Administrador</span>
         <div class="flex gap-2">
             <a href="../index.php" class="bg-yellow-400 text-blue-900 px-3 py-1 rounded font-bold">Ir al inicio</a>
-            <form action="../login.php" method="post">
-                <button type="submit" name="logout" class="bg-red-600 text-white px-3 py-1 rounded">Cerrar sesión</button>
-            </form>
+            <a href="../logout.php" class="bg-red-600 text-white px-3 py-1 rounded">Cerrar sesión</a>
         </div>
     </header>
+    <?php
+    require_once '../includes/db.php';
+    $config = $conn->query("SELECT * FROM configuracion WHERE id=1")->fetch_assoc();
+    $color_principal = $config['color_principal'] ?? '#25344b';
+    ?>
     <main class="max-w-3xl mx-auto py-8">
-        <h1 class="text-2xl font-bold mb-6 text-blue-900">Bienvenido, Administrador</h1>
-        <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
-            <a href="configuracion.php" class="block bg-yellow-400 text-blue-900 font-bold p-4 rounded shadow text-center hover:bg-yellow-300">Personalizar Página</a>
-            <a href="usuarios.php" class="block bg-blue-900 text-white font-bold p-4 rounded shadow text-center hover:bg-blue-800">Gestionar Usuarios</a>
-            <a href="../agente/propiedades.php" class="block bg-gray-200 text-blue-900 font-bold p-4 rounded shadow text-center hover:bg-gray-300">Gestionar Propiedades</a>
-            <a href="datos.php" class="block bg-gray-100 text-blue-900 font-bold p-4 rounded shadow text-center hover:bg-gray-200">Mis Datos</a>
-        </div>
+        <section style="background-color: <?= $color_principal ?>; color: #fff;" class="py-12 rounded-lg mb-8">
+            <h2 class="text-3xl font-bold mb-6 text-center tracking-wide">Panel de Administrador</h2>
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+                <a href="configuracion.php" class="block bg-yellow-400 text-blue-900 font-bold p-4 rounded shadow text-center hover:bg-yellow-300">Personalizar Página</a>
+                <a href="usuarios.php" class="block bg-blue-900 text-white font-bold p-4 rounded shadow text-center hover:bg-blue-800">Gestionar Usuarios</a>
+                <a href="../agente/propiedades.php" class="block bg-gray-200 text-blue-900 font-bold p-4 rounded shadow text-center hover:bg-gray-300">Gestionar Propiedades</a>
+                <a href="datos.php" class="block bg-gray-100 text-blue-900 font-bold p-4 rounded shadow text-center hover:bg-gray-200">Mis Datos</a>
+            </div>
+        </section>
     </main>
 </body>
 </html>

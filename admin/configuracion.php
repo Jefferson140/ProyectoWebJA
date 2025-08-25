@@ -55,24 +55,40 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             move_uploaded_file($_FILES['imagen_quienes_somos']['tmp_name'], '../' . $imagen_quienes_somos);
         }
     }
+    // Guardar colores personales del admin
+    if (isset($_POST['color_personal_principal']) && isset($_POST['color_personal_secundario'])) {
+        $color_personal_principal = $_POST['color_personal_principal'];
+        $color_personal_secundario = $_POST['color_personal_secundario'];
+        $id_admin = $_SESSION['id'];
+        $stmt = $conn->prepare("UPDATE usuarios SET color_principal=?, color_secundario=? WHERE id=?");
+        $stmt->bind_param('ssi', $color_personal_principal, $color_personal_secundario, $id_admin);
+        $stmt->execute();
+        $stmt->close();
+    }
     if (empty($errores)) {
         // Actualizar configuración
         $sql = "UPDATE configuracion SET color_principal=?, color_secundario=?, mensaje_banner=?, quienes_somos=?, facebook=?, instagram=?, youtube=?, direccion=?, telefono=?, email=?";
         $params = [$color_principal, $color_secundario, $mensaje_banner, $quienes_somos, $facebook, $instagram, $youtube, $direccion, $telefono, $email];
         if ($icono_principal) { $sql .= ", icono_principal=?"; $params[] = $icono_principal; }
         if ($icono_blanco) { $sql .= ", icono_blanco=?"; $params[] = $icono_blanco; }
-    if ($imagen_banner) { $sql .= ", imagen_banner=?"; $params[] = $imagen_banner; }
-    if ($imagen_quienes_somos) { $sql .= ", imagen_quienes_somos=?"; $params[] = $imagen_quienes_somos; }
+        if ($imagen_banner) { $sql .= ", imagen_banner=?"; $params[] = $imagen_banner; }
+        if ($imagen_quienes_somos) { $sql .= ", imagen_quienes_somos=?"; $params[] = $imagen_quienes_somos; }
         $sql .= " WHERE id=1";
         $types = str_repeat('s', count($params));
         $stmt = $conn->prepare($sql);
         $stmt->bind_param($types, ...$params);
-        if ($stmt->execute()) {
-            $mensaje = 'Configuración actualizada.';
+        $ok = $stmt->execute();
+        $stmt->close();
+        // Actualizar colores en todos los usuarios
+        $stmt2 = $conn->prepare("UPDATE usuarios SET color_principal=?, color_secundario=?");
+        $stmt2->bind_param('ss', $color_principal, $color_secundario);
+        $ok2 = $stmt2->execute();
+        $stmt2->close();
+        if ($ok && $ok2) {
+            $mensaje = 'Configuración y colores de usuarios actualizados.';
         } else {
             $mensaje = 'Error al actualizar.';
         }
-        $stmt->close();
     } else {
         $mensaje = 'Corrija los errores indicados.';
     }
@@ -133,12 +149,24 @@ if ($config && $config->num_rows > 0) {
         <div class="bg-white rounded shadow-lg p-8">
             <h1 class="text-3xl font-bold mb-8 text-blue-900 text-center">Personalizar Página</h1>
             <?php if($mensaje): ?><div class="bg-green-100 text-green-700 p-2 mb-4 rounded text-center font-semibold"><?= $mensaje ?></div><?php endif; ?>
+            <?php
+            // Obtener colores personales del admin
+            $id_admin = $_SESSION['id'];
+            $admin = $conn->query("SELECT color_principal, color_secundario FROM usuarios WHERE id=$id_admin")->fetch_assoc();
+            ?>
             <form method="post" enctype="multipart/form-data" class="space-y-8">
                 <div class="grid grid-cols-2 gap-6 mb-6">
                     <label class="font-semibold">Color principal:</label>
                     <input type="color" name="color_principal" value="<?= htmlspecialchars($config['color_principal']) ?>" class="border-2 border-gray-300 rounded w-16 h-10">
                     <label class="font-semibold">Color secundario:</label>
                     <input type="color" name="color_secundario" value="<?= htmlspecialchars($config['color_secundario']) ?>" class="border-2 border-gray-300 rounded w-16 h-10">
+                    <div class="col-span-2 flex justify-end mt-2">
+                        <form method="post" style="display:inline;">
+                            <input type="hidden" name="color_principal" value="#25344b">
+                            <input type="hidden" name="color_secundario" value="#ffe600">
+                            <button type="submit" class="bg-gray-300 text-blue-900 px-4 py-2 rounded font-bold">Volver a colores por defecto</button>
+                        </form>
+                    </div>
                     <label class="font-semibold">Ícono principal:</label>
                     <input type="file" name="icono_principal" accept="image/*" class="mb-2">
                     <?php if($config['icono_principal']): ?><img src="../<?= $config['icono_principal'] ?>" class="h-10 mb-2 mx-auto" alt="Ícono principal"><?php endif; ?>

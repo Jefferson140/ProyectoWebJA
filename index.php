@@ -7,14 +7,9 @@ require_once 'includes/session.php';
 $config = $conn->query("SELECT * FROM configuracion WHERE id=1")->fetch_assoc();
 $default_principal = '#25344b';
 $default_secundario = '#ffe600';
-if (isset($_SESSION['id'])) {
-    $usuario = $conn->query("SELECT color_principal, color_secundario FROM usuarios WHERE id=" . intval($_SESSION['id']))->fetch_assoc();
-    $color_principal = ($usuario['color_principal'] && $usuario['color_principal'] !== $default_principal) ? $usuario['color_principal'] : ($config['color_principal'] ?? $default_principal);
-    $color_secundario = ($usuario['color_secundario'] && $usuario['color_secundario'] !== $default_secundario) ? $usuario['color_secundario'] : ($config['color_secundario'] ?? $default_secundario);
-} else {
-    $color_principal = $config['color_principal'] ?? $default_principal;
-    $color_secundario = $config['color_secundario'] ?? $default_secundario;
-}
+// Usar solo los colores globales de la configuración para todos los usuarios
+$color_principal = $config['color_principal'] ?? $default_principal;
+$color_secundario = $config['color_secundario'] ?? $default_secundario;
 $mensaje_banner = $config['mensaje_banner'] ?? 'PERMITENOS SAYUDARTE A CUMPLIR<br>TUS SUEÑOS';
 $info_quienes = $config['quienes_somos'] ?? '';
 $facebook = $config['facebook'] ?? '#';
@@ -64,7 +59,7 @@ $alquileres = cargar_propiedades('alquiler');
 </head>
 <body class="bg-gray-100">
         <!-- Header -->
-        <header style="background-color: #181c2a; color: #fff;" class="w-full px-0 pt-2 pb-0">
+    <header style="background-color: <?= $color_principal ?>; color: #fff;" class="w-full px-0 pt-2 pb-0">
             <div class="max-w-full mx-auto w-full flex flex-row justify-between items-start">
                 <div class="flex flex-col items-start">
                     <div class="flex flex-row items-center gap-2 mb-1">
@@ -90,7 +85,19 @@ $alquileres = cargar_propiedades('alquiler');
                             <input type="text" name="q" placeholder="Buscar..." class="rounded px-3 py-1 text-black bg-white w-40">
                             <button type="submit" class="bg-white text-black px-2 py-1 rounded ml-2 flex items-center justify-center"><svg class="h-6 w-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></button>
                         </form>
-                        <a href="login.php" class="ml-2"><img src="img/login.png" class="h-8" alt="Login"></a>
+                        <?php if(usuario_autenticado()): ?>
+                            <div class="ml-2 flex items-center gap-2">
+                                <span class="text-yellow-400 font-bold">Hola, <?= htmlspecialchars($_SESSION['usuario']) ?></span>
+                                <?php if(es_admin()): ?>
+                                    <a href="admin/panel.php" class="bg-blue-900 text-white px-3 py-1 rounded font-bold">Panel Admin</a>
+                                <?php elseif(es_agente()): ?>
+                                    <a href="agente/panel.php" class="bg-blue-900 text-white px-3 py-1 rounded font-bold">Panel Agente</a>
+                                <?php endif; ?>
+                                <a href="logout.php" class="bg-red-600 text-white px-3 py-1 rounded font-bold">Cerrar sesión</a>
+                            </div>
+                        <?php else: ?>
+                            <a href="login.php" class="ml-2"><img src="img/login.png" class="h-8" alt="Login"></a>
+                        <?php endif; ?>
                     </div>
                 </div>
             </div>
@@ -117,7 +124,7 @@ $alquileres = cargar_propiedades('alquiler');
         </div>
     </section>
     <!-- Propiedades Destacadas -->
-    <section class="bg-blue-900 py-12 text-white">
+    <section style="background-color: <?= $color_principal ?>; color: #fff;" class="py-12">
         <div class="max-w-7xl mx-auto">
             <h2 class="text-3xl font-bold mb-6 text-center tracking-wide">PROPIEDADES DESTACADAS</h2>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -134,7 +141,7 @@ $alquileres = cargar_propiedades('alquiler');
         </div>
     </section>
     <!-- Propiedades en Venta -->
-    <section class="bg-white py-12">
+    <section style="background-color: #fff; color: <?= $color_principal ?>;" class="py-12">
         <div class="max-w-6xl mx-auto">
             <h2 class="text-2xl font-bold mb-8 text-center text-blue-900">PROPIEDADES EN VENTA</h2>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -151,7 +158,7 @@ $alquileres = cargar_propiedades('alquiler');
         </div>
     </section>
     <!-- Propiedades en Alquiler -->
-    <section style="background-color: <?= $color_principal ?>; color: #fff;" class="py-12">
+    <section style="background-color: <?= $color_secundario ?>; color: #fff;" class="py-12">
         <div class="max-w-6xl mx-auto">
             <h2 class="text-2xl font-bold mb-8 text-center">PROPIEDADES EN ALQUILER</h2>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8">

@@ -2,11 +2,7 @@
 require_once 'includes/db.php';
 require_once 'includes/functions.php';
 require_once 'includes/session.php';
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['logout'])) {
-    session_unset();
-    session_destroy();
-    redirigir('login.php');
-}
+// La sesión solo se cierra desde logout.php o el botón de los paneles
 $error = '';
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $usuario = $_POST['usuario'] ?? '';
@@ -21,7 +17,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $_SESSION['usuario'] = $user['usuario'];
             $_SESSION['privilegio'] = $user['privilegio'];
             $_SESSION['id'] = $user['id'];
-            redirigir('index.php');
+            if ($user['privilegio'] === 'admin' || $user['privilegio'] === 'administrador') {
+                redirigir('admin/panel.php');
+            } elseif ($user['privilegio'] === 'agente') {
+                redirigir('agente/panel.php');
+            } else {
+                redirigir('index.php');
+            }
         } else {
             $error = 'Contraseña incorrecta.';
         }
