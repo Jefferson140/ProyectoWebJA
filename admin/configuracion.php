@@ -27,7 +27,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if ($_FILES['icono_principal']['size'] > $max_size) $errores['icono_principal'] = 'El ícono principal es muy grande.';
         if (!in_array($_FILES['icono_principal']['type'], $allowed_types)) $errores['icono_principal'] = 'Formato de ícono principal no permitido.';
         if (empty($errores['icono_principal'])) {
-            $icono_principal = 'img/icono_principal.png';
+            $ext = pathinfo($_FILES['icono_principal']['name'], PATHINFO_EXTENSION);
+            $icono_principal = 'img/icono_principal_' . time() . '.' . $ext;
             move_uploaded_file($_FILES['icono_principal']['tmp_name'], '../' . $icono_principal);
         }
     }
@@ -35,7 +36,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if ($_FILES['icono_blanco']['size'] > $max_size) $errores['icono_blanco'] = 'El ícono blanco es muy grande.';
         if (!in_array($_FILES['icono_blanco']['type'], $allowed_types)) $errores['icono_blanco'] = 'Formato de ícono blanco no permitido.';
         if (empty($errores['icono_blanco'])) {
-            $icono_blanco = 'img/icono_blanco.png';
+            $ext = pathinfo($_FILES['icono_blanco']['name'], PATHINFO_EXTENSION);
+            $icono_blanco = 'img/icono_blanco_' . time() . '.' . $ext;
             move_uploaded_file($_FILES['icono_blanco']['tmp_name'], '../' . $icono_blanco);
         }
     }
@@ -43,7 +45,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if ($_FILES['imagen_banner']['size'] > $max_size) $errores['imagen_banner'] = 'La imagen del banner es muy grande.';
         if (!in_array($_FILES['imagen_banner']['type'], $allowed_types)) $errores['imagen_banner'] = 'Formato de banner no permitido.';
         if (empty($errores['imagen_banner'])) {
-            $imagen_banner = 'img/banner.jpg';
+            $ext = pathinfo($_FILES['imagen_banner']['name'], PATHINFO_EXTENSION);
+            $imagen_banner = 'img/banner_' . time() . '.' . $ext;
             move_uploaded_file($_FILES['imagen_banner']['tmp_name'], '../' . $imagen_banner);
         }
     }
@@ -51,7 +54,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if ($_FILES['imagen_quienes_somos']['size'] > $max_size) $errores['imagen_quienes_somos'] = 'La imagen de quienes somos es muy grande.';
         if (!in_array($_FILES['imagen_quienes_somos']['type'], $allowed_types)) $errores['imagen_quienes_somos'] = 'Formato de imagen quienes somos no permitido.';
         if (empty($errores['imagen_quienes_somos'])) {
-            $imagen_quienes_somos = 'img/quienes.jpg';
+            $ext = pathinfo($_FILES['imagen_quienes_somos']['name'], PATHINFO_EXTENSION);
+            $imagen_quienes_somos = 'img/quienes_' . time() . '.' . $ext;
             move_uploaded_file($_FILES['imagen_quienes_somos']['tmp_name'], '../' . $imagen_quienes_somos);
         }
     }
@@ -66,18 +70,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $stmt->close();
     }
     if (empty($errores)) {
-        // Actualizar configuración
-        $sql = "UPDATE configuracion SET color_principal=?, color_secundario=?, mensaje_banner=?, quienes_somos=?, facebook=?, instagram=?, youtube=?, direccion=?, telefono=?, email=?";
-        $params = [$color_principal, $color_secundario, $mensaje_banner, $quienes_somos, $facebook, $instagram, $youtube, $direccion, $telefono, $email];
-        if ($icono_principal) { $sql .= ", icono_principal=?"; $params[] = $icono_principal; }
-        if ($icono_blanco) { $sql .= ", icono_blanco=?"; $params[] = $icono_blanco; }
-        if ($imagen_banner) { $sql .= ", imagen_banner=?"; $params[] = $imagen_banner; }
-        if ($imagen_quienes_somos) { $sql .= ", imagen_quienes_somos=?"; $params[] = $imagen_quienes_somos; }
-        $sql .= " WHERE id=1";
-        $types = str_repeat('s', count($params));
-        $stmt = $conn->prepare($sql);
-        $stmt->bind_param($types, ...$params);
-        $ok = $stmt->execute();
+    // Actualizar configuración sin campos personalizados del formulario de contacto
+    $sql = "UPDATE configuracion SET color_principal=?, color_secundario=?, mensaje_banner=?, quienes_somos=?, facebook=?, instagram=?, youtube=?, direccion=?, telefono=?, email=?";
+    $params = [$color_principal, $color_secundario, $mensaje_banner, $quienes_somos, $facebook, $instagram, $youtube, $direccion, $telefono, $email];
+    if ($icono_principal) { $sql .= ", icono_principal=?"; $params[] = $icono_principal; }
+    if ($icono_blanco) { $sql .= ", icono_blanco=?"; $params[] = $icono_blanco; }
+    if ($imagen_banner) { $sql .= ", imagen_banner=?"; $params[] = $imagen_banner; }
+    if ($imagen_quienes_somos) { $sql .= ", imagen_quienes_somos=?"; $params[] = $imagen_quienes_somos; }
+    $sql .= " WHERE id=1";
+    $types = str_repeat('s', count($params));
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param($types, ...$params);
+    $ok = $stmt->execute();
         $stmt->close();
         // Actualizar colores en todos los usuarios
         $stmt2 = $conn->prepare("UPDATE usuarios SET color_principal=?, color_secundario=?");
@@ -145,68 +149,91 @@ if ($config && $config->num_rows > 0) {
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
 </head>
 <body class="bg-gray-100 min-h-screen">
+    <header class="bg-blue-900 text-white p-4 flex justify-between items-center">
+        <span class="font-bold text-lg">Personalizar Página</span>
+        <a href="panel.php" class="bg-yellow-400 text-blue-900 px-3 py-1 rounded font-bold">Volver al panel</a>
+    </header>
     <main class="max-w-4xl mx-auto py-8">
-        <div class="bg-white rounded shadow-lg p-8">
-            <h1 class="text-3xl font-bold mb-8 text-blue-900 text-center">Personalizar Página</h1>
-            <?php if($mensaje): ?><div class="bg-green-100 text-green-700 p-2 mb-4 rounded text-center font-semibold"><?= $mensaje ?></div><?php endif; ?>
+        <div class="bg-white rounded-2xl shadow-2xl p-10 border border-gray-200">
+            <h1 class="text-3xl font-extrabold mb-8 text-blue-900 text-center drop-shadow">Personalizar Página</h1>
+            <?php if($mensaje): ?>
+                <div class="bg-green-100 text-green-700 p-3 mb-6 rounded-xl text-center font-semibold shadow">
+                    <?= $mensaje ?>
+                </div>
+            <?php endif; ?>
             <?php
-            // Obtener colores personales del admin
             $id_admin = $_SESSION['id'];
             $admin = $conn->query("SELECT color_principal, color_secundario FROM usuarios WHERE id=$id_admin")->fetch_assoc();
             ?>
-            <form method="post" enctype="multipart/form-data" class="space-y-8">
-                <div class="grid grid-cols-2 gap-6 mb-6">
-                    <label class="font-semibold">Color principal:</label>
-                    <input type="color" name="color_principal" value="<?= htmlspecialchars($config['color_principal']) ?>" class="border-2 border-gray-300 rounded w-16 h-10">
-                    <label class="font-semibold">Color secundario:</label>
-                    <input type="color" name="color_secundario" value="<?= htmlspecialchars($config['color_secundario']) ?>" class="border-2 border-gray-300 rounded w-16 h-10">
-                    <div class="col-span-2 flex justify-end mt-2">
-                        <button type="button" class="bg-gray-300 text-blue-900 px-4 py-2 rounded font-bold" onclick="document.querySelector('input[name=\'color_principal\']').value='#25344b';document.querySelector('input[name=\'color_secundario\']').value='#ffe600';">Volver a colores por defecto</button>
+            <form method="post" enctype="multipart/form-data" class="space-y-10">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+                    <div>
+                        <label class="block font-bold mb-2 text-blue-900">Color principal:</label>
+                        <input type="color" name="color_principal" value="<?= htmlspecialchars($config['color_principal']) ?>" class="border-2 border-blue-900 rounded-lg w-20 h-12 shadow">
                     </div>
-                    <label class="font-semibold">Ícono principal:</label>
-                    <input type="file" name="icono_principal" accept="image/*" class="mb-2">
-                    <?php if($config['icono_principal']): ?><img src="../<?= $config['icono_principal'] ?>" class="h-10 mb-2 mx-auto" alt="Ícono principal"><?php endif; ?>
-                    <label class="font-semibold">Ícono blanco:</label>
-                    <input type="file" name="icono_blanco" accept="image/*" class="mb-2">
-                    <?php if($config['icono_blanco']): ?><img src="../<?= $config['icono_blanco'] ?>" class="h-10 mb-2 bg-gray-100 mx-auto" alt="Ícono blanco"><?php endif; ?>
-                    <label class="font-semibold">Imagen principal del banner:</label>
-                    <input type="file" name="imagen_banner" accept="image/*" class="mb-2">
-                    <?php if($config['imagen_banner']): ?><img src="../<?= $config['imagen_banner'] ?>" class="h-20 mb-2 mx-auto" alt="Banner"><?php endif; ?>
-                    <label class="font-semibold">Mensaje del banner:</label>
-                    <input type="text" name="mensaje_banner" value="<?= htmlspecialchars($config['mensaje_banner']) ?>" class="border rounded px-2 py-1">
-                    <label class="font-semibold">Información de quienes somos:</label>
-                    <textarea name="quienes_somos" class="border rounded px-2 py-1" rows="3"><?= htmlspecialchars($config['quienes_somos']) ?></textarea>
-                    <label class="font-semibold">Imagen quienes somos:</label>
-                    <input type="file" name="imagen_quienes_somos" accept="image/*" class="mb-2">
-                    <?php if($config['imagen_quienes_somos']): ?><img src="../<?= $config['imagen_quienes_somos'] ?>" class="h-20 mb-2 mx-auto" alt="Quienes somos"><?php endif; ?>
-                    <label class="font-semibold">Facebook:</label>
-                    <input type="text" name="facebook" value="<?= htmlspecialchars($config['facebook']) ?>" class="border rounded px-2 py-1">
-                    <label class="font-semibold">Instagram:</label>
-                    <input type="text" name="instagram" value="<?= htmlspecialchars($config['instagram']) ?>" class="border rounded px-2 py-1">
-                    <label class="font-semibold">YouTube:</label>
-                    <input type="text" name="youtube" value="<?= htmlspecialchars($config['youtube']) ?>" class="border rounded px-2 py-1">
-                    <label class="font-semibold">Dirección:</label>
-                    <input type="text" name="direccion" value="<?= htmlspecialchars($config['direccion']) ?>" class="border rounded px-2 py-1">
-                    <label class="font-semibold">Teléfono:</label>
-                    <input type="text" name="telefono" value="<?= htmlspecialchars($config['telefono']) ?>" class="border rounded px-2 py-1">
-                    <label class="font-semibold">Email:</label>
-                    <input type="email" name="email" value="<?= htmlspecialchars($config['email']) ?>" class="border rounded px-2 py-1">
-                    <hr class="my-4">
-                    <h2 class="text-lg font-bold mb-2 text-blue-900 col-span-2">Personalizar formulario de contacto (footer)</h2>
-                    <label class="font-semibold">Texto Nombre:</label>
-                    <input type="text" name="contacto_nombre" value="<?= htmlspecialchars($config['contacto_nombre'] ?? 'Nombre:') ?>" class="border rounded px-2 py-1">
-                    <label class="font-semibold">Texto Email:</label>
-                    <input type="text" name="contacto_email" value="<?= htmlspecialchars($config['contacto_email'] ?? 'Email:') ?>" class="border rounded px-2 py-1">
-                    <label class="font-semibold">Texto Teléfono:</label>
-                    <input type="text" name="contacto_telefono" value="<?= htmlspecialchars($config['contacto_telefono'] ?? 'Teléfono:') ?>" class="border rounded px-2 py-1">
-                    <label class="font-semibold">Texto Mensaje:</label>
-                    <input type="text" name="contacto_mensaje" value="<?= htmlspecialchars($config['contacto_mensaje'] ?? 'Mensaje:') ?>" class="border rounded px-2 py-1">
-                    <label class="font-semibold">Texto Botón:</label>
-                    <input type="text" name="contacto_boton" value="<?= htmlspecialchars($config['contacto_boton'] ?? 'Enviar') ?>" class="border rounded px-2 py-1">
-            </div>
-                <button type="submit" class="bg-blue-900 text-white px-6 py-2 rounded font-bold w-full">Guardar Cambios</button>
+                    <div>
+                        <label class="block font-bold mb-2 text-blue-900">Color secundario:</label>
+                        <input type="color" name="color_secundario" value="<?= htmlspecialchars($config['color_secundario']) ?>" class="border-2 border-yellow-400 rounded-lg w-20 h-12 shadow">
+                    </div>
+                    <div class="md:col-span-2 flex justify-end mt-2">
+                        <button type="button" class="bg-gray-300 text-blue-900 px-5 py-2 rounded-lg font-bold shadow hover:bg-gray-400 transition" onclick="document.querySelector('input[name=\'color_principal\']').value='#25344b';document.querySelector('input[name=\'color_secundario\']').value='#ffe600';">Colores por defecto</button>
+                    </div>
+                    <div>
+                        <label class="block font-bold mb-2 text-blue-900">Ícono principal:</label>
+                        <input type="file" name="icono_principal" accept="image/*" class="w-full px-3 py-2 border-2 border-gray-300 rounded-lg shadow">
+                        <?php if($config['icono_principal']): ?><img src="../<?= $config['icono_principal'] ?>" class="h-12 mb-2 mx-auto rounded shadow" alt="Ícono principal"><?php endif; ?>
+                    </div>
+                    <div>
+                        <label class="block font-bold mb-2 text-blue-900">Ícono blanco:</label>
+                        <input type="file" name="icono_blanco" accept="image/*" class="w-full px-3 py-2 border-2 border-gray-300 rounded-lg shadow">
+                        <?php if($config['icono_blanco']): ?><img src="../<?= $config['icono_blanco'] ?>" class="h-12 mb-2 mx-auto rounded shadow bg-gray-100" alt="Ícono blanco"><?php endif; ?>
+                    </div>
+                    <div>
+                        <label class="block font-bold mb-2 text-blue-900">Imagen principal del banner:</label>
+                        <input type="file" name="imagen_banner" accept="image/*" class="w-full px-3 py-2 border-2 border-gray-300 rounded-lg shadow">
+                        <?php if($config['imagen_banner']): ?><img src="../<?= $config['imagen_banner'] ?>" class="h-20 mb-2 mx-auto rounded shadow" alt="Banner"><?php endif; ?>
+                    </div>
+                    <div>
+                        <label class="block font-bold mb-2 text-blue-900">Mensaje del banner:</label>
+                        <input type="text" name="mensaje_banner" value="<?= htmlspecialchars($config['mensaje_banner']) ?>" class="w-full px-3 py-2 border-2 border-blue-900 rounded-lg shadow">
+                    </div>
+                    <div class="md:col-span-2">
+                        <label class="block font-bold mb-2 text-blue-900">Información de quienes somos:</label>
+                        <textarea name="quienes_somos" class="w-full px-3 py-2 border-2 border-blue-900 rounded-lg shadow" rows="3"><?= htmlspecialchars($config['quienes_somos']) ?></textarea>
+                    </div>
+                    <div>
+                        <label class="block font-bold mb-2 text-blue-900">Imagen quienes somos:</label>
+                        <input type="file" name="imagen_quienes_somos" accept="image/*" class="w-full px-3 py-2 border-2 border-gray-300 rounded-lg shadow">
+                        <?php if($config['imagen_quienes_somos']): ?><img src="../<?= $config['imagen_quienes_somos'] ?>" class="h-20 mb-2 mx-auto rounded shadow" alt="Quienes somos"><?php endif; ?>
+                    </div>
+                    <div>
+                        <label class="block font-bold mb-2 text-blue-900">Facebook:</label>
+                        <input type="text" name="facebook" value="<?= htmlspecialchars($config['facebook']) ?>" class="w-full px-3 py-2 border-2 border-gray-300 rounded-lg shadow">
+                    </div>
+                    <div>
+                        <label class="block font-bold mb-2 text-blue-900">Instagram:</label>
+                        <input type="text" name="instagram" value="<?= htmlspecialchars($config['instagram']) ?>" class="w-full px-3 py-2 border-2 border-gray-300 rounded-lg shadow">
+                    </div>
+                    <div>
+                        <label class="block font-bold mb-2 text-blue-900">YouTube:</label>
+                        <input type="text" name="youtube" value="<?= htmlspecialchars($config['youtube']) ?>" class="w-full px-3 py-2 border-2 border-gray-300 rounded-lg shadow">
+                    </div>
+                    <div>
+                        <label class="block font-bold mb-2 text-blue-900">Dirección:</label>
+                        <input type="text" name="direccion" value="<?= htmlspecialchars($config['direccion']) ?>" class="w-full px-3 py-2 border-2 border-gray-300 rounded-lg shadow">
+                    </div>
+                    <div>
+                        <label class="block font-bold mb-2 text-blue-900">Teléfono:</label>
+                        <input type="text" name="telefono" value="<?= htmlspecialchars($config['telefono']) ?>" class="w-full px-3 py-2 border-2 border-gray-300 rounded-lg shadow">
+                    </div>
+                    <div>
+                        <label class="block font-bold mb-2 text-blue-900">Email:</label>
+                        <input type="email" name="email" value="<?= htmlspecialchars($config['email']) ?>" class="w-full px-3 py-2 border-2 border-gray-300 rounded-lg shadow">
+                    </div>
+                </div>
+                <button type="submit" class="bg-blue-900 text-white px-8 py-3 rounded-xl font-extrabold w-full shadow-lg hover:bg-blue-800 transition text-lg">Guardar Cambios</button>
             </form>
-            <a href="../index.php" class="block mt-8 text-blue-900 font-bold text-center">Volver al inicio</a>
+            <a href="../index.php" class="block mt-10 text-blue-900 font-bold text-center hover:underline">Volver al inicio</a>
         </div>
     </main>
 </body>

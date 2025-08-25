@@ -8,23 +8,6 @@ $mensaje = '';
 $u = $conn->query("SELECT * FROM usuarios WHERE id=$id")->fetch_assoc();
 
 // Procesar formulario de colores
-if (isset($_POST['guardar_colores'])) {
-    $color_principal = $_POST['color_principal'] ?? '#25344b';
-    $color_secundario = $_POST['color_secundario'] ?? '#ffe600';
-    $stmt = $conn->prepare("UPDATE usuarios SET color_principal=?, color_secundario=? WHERE id=?");
-    $stmt->bind_param('ssi', $color_principal, $color_secundario, $id);
-    if ($stmt->execute()) {
-        $mensaje = 'Colores actualizados correctamente.';
-        // Actualizar en la sesión para que se refleje inmediatamente
-        $_SESSION['color_principal'] = $color_principal;
-        $_SESSION['color_secundario'] = $color_secundario;
-        // Recargar datos del usuario
-        $u = $conn->query("SELECT * FROM usuarios WHERE id=$id")->fetch_assoc();
-    } else {
-        $mensaje = 'Error al actualizar los colores.';
-    }
-    $stmt->close();
-}
 
 // Procesar formulario de datos personales
 if (isset($_POST['actualizar_datos'])) {
@@ -66,10 +49,14 @@ if (isset($_POST['actualizar_datos'])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Actualizar Datos y Colores</title>
+    <title>Actualizar Datos Personales</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
 </head>
 <body class="bg-gray-100 min-h-screen">
+    <header class="bg-blue-900 text-white p-4 flex justify-between items-center">
+        <span class="font-bold">Actualizar Datos Personales</span>
+        <a href="panel.php" class="bg-yellow-400 text-blue-900 px-3 py-1 rounded font-bold">Volver al panel</a>
+    </header>
     <main class="max-w-4xl mx-auto py-8">
         <h1 class="text-2xl font-bold mb-6 text-blue-900">Actualizar Datos Personales</h1>
         <?php if($mensaje): ?><div class="bg-green-100 text-green-700 p-2 mb-2 rounded"><?= $mensaje ?></div><?php endif; ?>
@@ -83,14 +70,6 @@ if (isset($_POST['actualizar_datos'])) {
                 <input type="password" name="contrasena" placeholder="Nueva Contraseña (opcional)" class="border rounded px-2 py-1">
             </div>
             <button type="submit" name="actualizar_datos" class="bg-blue-900 text-white px-4 py-2 rounded font-bold">Actualizar Datos</button>
-        </form>
-        <h2 class="text-xl font-bold mb-4 text-blue-900">Personalizar Colores</h2>
-        <form method="post" class="bg-white p-6 rounded shadow mb-8">
-            <label class="block mb-2 font-semibold">Color principal:</label>
-            <input type="color" name="color_principal" value="<?= htmlspecialchars($u['color_principal']) ?>" class="mb-4">
-            <label class="block mb-2 font-semibold">Color secundario:</label>
-            <input type="color" name="color_secundario" value="<?= htmlspecialchars($u['color_secundario']) ?>" class="mb-4">
-            <button type="submit" name="guardar_colores" class="bg-blue-900 text-white px-4 py-2 rounded font-bold">Guardar Cambios</button>
         </form>
         <a href="panel.php" class="block mt-6 text-blue-900 font-bold">Volver al panel</a>
     </main>
@@ -128,30 +107,3 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 ?>
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Actualizar Datos Personales</title>
-    <link href="../css/tailwind.css" rel="stylesheet">
-</head>
-<body class="bg-gray-100 min-h-screen">
-    <main class="max-w-4xl mx-auto py-8">
-        <h1 class="text-2xl font-bold mb-6 text-blue-900">Actualizar Datos Personales</h1>
-        <?php if($mensaje): ?><div class="bg-green-100 text-green-700 p-2 mb-2 rounded"><?= $mensaje ?></div><?php endif; ?>
-        <form method="post" class="bg-white p-4 rounded shadow mb-8">
-            <div class="grid grid-cols-2 gap-4 mb-2">
-                <input type="text" name="nombre" value="<?= htmlspecialchars($u['nombre']) ?>" placeholder="Nombre" class="border rounded px-2 py-1" required>
-                <input type="text" name="telefono" value="<?= htmlspecialchars($u['telefono']) ?>" placeholder="Teléfono" class="border rounded px-2 py-1">
-                <input type="text" name="correo" value="<?= htmlspecialchars($u['correo']) ?>" placeholder="Correo" class="border rounded px-2 py-1">
-                <input type="email" name="email" value="<?= htmlspecialchars($u['email']) ?>" placeholder="Email" class="border rounded px-2 py-1">
-                <input type="text" name="usuario" value="<?= htmlspecialchars($u['usuario']) ?>" placeholder="Usuario" class="border rounded px-2 py-1" required>
-                <input type="password" name="contrasena" placeholder="Nueva Contraseña (opcional)" class="border rounded px-2 py-1">
-            </div>
-            <button type="submit" class="bg-blue-900 text-white px-4 py-2 rounded font-bold">Actualizar Datos</button>
-        </form>
-        <a href="panel.php" class="block mt-6 text-blue-900 font-bold">Volver al panel</a>
-    </main>
-</body>
-</html>

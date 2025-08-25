@@ -88,11 +88,12 @@ $alquileres = cargar_propiedades('alquiler');
                         <?php if(usuario_autenticado()): ?>
                             <div class="ml-2 flex items-center gap-2">
                                 <span class="text-yellow-400 font-bold">Hola, <?= htmlspecialchars($_SESSION['usuario']) ?></span>
-                                <?php if(es_admin()): ?>
-                                    <a href="admin/panel.php" class="bg-blue-900 text-white px-3 py-1 rounded font-bold">Panel Admin</a>
-                                <?php elseif(es_agente()): ?>
-                                    <a href="agente/panel.php" class="bg-blue-900 text-white px-3 py-1 rounded font-bold">Panel Agente</a>
-                                <?php endif; ?>
+                                    <?php if(es_admin()): ?>
+                                        <a href="admin/panel.php" class="bg-blue-900 text-white px-3 py-1 rounded font-bold">Panel Admin</a>
+                                    <?php endif; ?>
+                                    <?php if(es_agente()): ?>
+                                        <a href="agente/panel.php" class="bg-blue-900 text-white px-3 py-1 rounded font-bold">Panel Agente</a>
+                                    <?php endif; ?>
                                 <a href="logout.php" class="bg-red-600 text-white px-3 py-1 rounded font-bold">Cerrar sesión</a>
                             </div>
                         <?php else: ?>
@@ -104,6 +105,13 @@ $alquileres = cargar_propiedades('alquiler');
         </header>
     <!-- Banner -->
     <section class="relative h-72 flex items-center justify-center" style="background-image:url('img/banner.jpg'); background-size:cover; background-position:center;">
+                <div class="absolute inset-0" style="background-image:url('<?php
+                    if (!empty($config['imagen_banner']) && file_exists($config['imagen_banner'])) {
+                        echo $config['imagen_banner'];
+                    } else {
+                        echo 'img/banner.jpg';
+                    }
+                ?>'); background-size:cover; background-position:center;"></div>
                 <div class="absolute inset-0 bg-black bg-opacity-40"></div>
                 <div class="absolute inset-0 flex items-center justify-center">
                     <h1 class="text-white text-2xl md:text-3xl font-bold text-center tracking-wide px-4" style="font-family: 'Montserrat', Arial, sans-serif; letter-spacing:1px;">
@@ -119,7 +127,18 @@ $alquileres = cargar_propiedades('alquiler');
                 <p class="text-gray-700 mb-4"><?= nl2br(htmlspecialchars($info_quienes)) ?></p>
             </div>
             <div class="flex-1 flex justify-center">
-                <img src="img/quienes.jpg" alt="Quienes Somos" class="rounded shadow-lg h-44 w-80 object-cover">
+                <?php
+                $img_quienes = !empty($config['imagen_quienes_somos']) ? $config['imagen_quienes_somos'] : 'img/quienes.jpg';
+                if (!empty($config['imagen_quienes_somos']) && file_exists($img_quienes)) {
+                ?>
+                    <img src="<?= $img_quienes ?>" alt="Quienes Somos" class="rounded shadow-lg h-44 w-80 object-cover">
+                <?php
+                } else {
+                ?>
+                    <img src="img/quienes.jpg" alt="Quienes Somos" class="rounded shadow-lg h-44 w-80 object-cover">
+                <?php
+                }
+                ?>
             </div>
         </div>
     </section>
@@ -128,16 +147,38 @@ $alquileres = cargar_propiedades('alquiler');
         <div class="max-w-7xl mx-auto">
             <h2 class="text-3xl font-bold mb-6 text-center tracking-wide">PROPIEDADES DESTACADAS</h2>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <?php while($p = $destacados->fetch_assoc()): ?>
+                <?php mysqli_data_seek($destacados, 0); while($p = $destacados->fetch_assoc()): ?>
                 <div class="bg-blue-900 border border-blue-900 rounded-lg shadow-lg p-4 flex flex-col items-center">
-                    <img src="<?= htmlspecialchars($p['imagen_destacada']) ?>" alt="<?= htmlspecialchars($p['titulo']) ?>" class="h-32 w-full object-cover mb-2 rounded">
+                    <img src="<?= !empty($p['imagen_destacada']) && file_exists($p['imagen_destacada']) ? htmlspecialchars($p['imagen_destacada']) : 'img/default.jpg' ?>" alt="<?= htmlspecialchars($p['titulo']) ?>" class="h-32 w-full object-cover mb-2 rounded cursor-pointer" onclick="mostrarModal('destacado-<?= $p['id'] ?>')">
                     <h3 class="font-bold text-lg italic mb-1"><?= htmlspecialchars($p['titulo']) ?></h3>
                     <p class="mb-2 text-center"><?= htmlspecialchars($p['descripcion_breve']) ?></p>
                     <p class="font-bold text-yellow-500 mb-2">Precio: $<?= number_format($p['precio'],0) ?></p>
-                    <a href="propiedades/detalle.php?id=<?= $p['id'] ?>" class="mt-2 block bg-blue-900 text-white px-4 py-2 rounded text-center font-semibold">VER MAS...</a>
+                </div>
+                <?php endwhile; ?>
+                <?php mysqli_data_seek($destacados, 0); while($p = $destacados->fetch_assoc()): ?>
+                <div id="modal-destacado-<?= $p['id'] ?>" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+                    <div class="bg-white rounded-lg shadow-lg p-6 max-w-md w-full relative">
+                        <button onclick="cerrarModal('destacado-<?= $p['id'] ?>')" class="absolute top-2 right-2 text-gray-500 hover:text-red-600 text-2xl font-bold">&times;</button>
+                        <img src="<?= !empty($p['imagen_destacada']) && file_exists($p['imagen_destacada']) ? htmlspecialchars($p['imagen_destacada']) : 'img/default.jpg' ?>" alt="<?= htmlspecialchars($p['titulo']) ?>" class="h-48 w-full object-cover mb-2 rounded">
+                        <h2 class="font-bold text-2xl mb-2 text-blue-900"><?= htmlspecialchars($p['titulo']) ?></h2>
+                        <p class="mb-2 text-gray-700"><span class="font-bold">Tipo:</span> <?= htmlspecialchars($p['tipo']) ?></p>
+                        <p class="mb-2 text-gray-700"><span class="font-bold">Descripción breve:</span> <?= htmlspecialchars($p['descripcion_breve']) ?></p>
+                        <?php if (!empty($p['descripcion_larga'])): ?>
+                        <p class="mb-2 text-gray-700"><span class="font-bold">Descripción larga:</span> <?= htmlspecialchars($p['descripcion_larga']) ?></p>
+                        <?php endif; ?>
+                        <p class="mb-2 text-gray-700"><span class="font-bold">Precio:</span> $<?= number_format($p['precio'],0) ?></p>
+                        <p class="mb-2 text-gray-700"><span class="font-bold">Agente:</span> <?= htmlspecialchars($p['agente_id']) ?></p>
+                        <?php if (!empty($p['ubicacion'])): ?>
+                        <p class="mb-2 text-gray-700"><span class="font-bold">Ubicación:</span> <?= htmlspecialchars($p['ubicacion']) ?></p>
+                        <?php endif; ?>
+                        <p class="mb-2 text-gray-700"><span class="font-bold">Fecha de creación:</span> <?= htmlspecialchars($p['fecha_creacion']) ?></p>
+                    </div>
                 </div>
                 <?php endwhile; ?>
             </div>
+        </div>
+        <div class="flex justify-center mt-6">
+            <a href="propiedades/listar.php?destacada=1" class="bg-blue-900 text-white px-6 py-2 rounded font-bold shadow hover:bg-blue-800 transition">Ver más propiedades destacadas</a>
         </div>
     </section>
     <!-- Propiedades en Venta -->
@@ -145,16 +186,36 @@ $alquileres = cargar_propiedades('alquiler');
         <div class="max-w-6xl mx-auto">
             <h2 class="text-2xl font-bold mb-8 text-center text-blue-900">PROPIEDADES EN VENTA</h2>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <?php while($p = $ventas->fetch_assoc()): ?>
+                <?php mysqli_data_seek($ventas, 0); while($p = $ventas->fetch_assoc()): ?>
                 <div class="bg-gray-100 rounded shadow p-4 flex flex-col items-center">
-                    <img src="<?= htmlspecialchars($p['imagen_destacada']) ?>" alt="<?= htmlspecialchars($p['titulo']) ?>" class="h-32 w-full object-cover mb-2 rounded">
+                    <img src="<?= !empty($p['imagen_destacada']) && file_exists($p['imagen_destacada']) ? htmlspecialchars($p['imagen_destacada']) : 'img/default.jpg' ?>" alt="<?= htmlspecialchars($p['titulo']) ?>" class="h-32 w-full object-cover mb-2 rounded cursor-pointer" onclick="mostrarModal('venta-<?= $p['id'] ?>')">
                     <h3 class="font-bold text-lg italic mb-1"><?= htmlspecialchars($p['titulo']) ?></h3>
                     <p class="mb-2 text-center"><?= htmlspecialchars($p['descripcion_breve']) ?></p>
                     <p class="font-bold text-blue-900 mb-2">Precio: $<?= number_format($p['precio'],0) ?></p>
-                    <a href="propiedades/detalle.php?id=<?= $p['id'] ?>" class="mt-2 block border border-yellow-400 text-yellow-600 px-4 py-2 rounded text-center font-semibold">VER MAS...</a>
+                </div>
+                <?php endwhile; ?>
+                <?php mysqli_data_seek($ventas, 0); while($p = $ventas->fetch_assoc()): ?>
+                <div id="modal-venta-<?= $p['id'] ?>" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+                    <div class="bg-white rounded-lg p-6 w-full max-w-md relative">
+                        <button onclick="cerrarModal('venta-<?= $p['id'] ?>')" class="absolute top-2 right-2 text-gray-500 hover:text-red-600 text-2xl">&times;</button>
+                        <img src="<?= !empty($p['imagen_destacada']) && file_exists($p['imagen_destacada']) ? htmlspecialchars($p['imagen_destacada']) : 'img/default.jpg' ?>" alt="<?= htmlspecialchars($p['titulo']) ?>" class="h-48 w-full object-cover mb-2 rounded">
+                        <h3 class="font-bold text-xl mb-2 text-blue-900"><?= htmlspecialchars($p['titulo']) ?></h3>
+                            <p class="mb-2 text-gray-700"><span class="font-bold">Descripción breve:</span> <?= htmlspecialchars($p['descripcion_breve']) ?></p>
+                            <?php if (!empty($p['descripcion_larga'])): ?>
+                            <p class="mb-2 text-gray-700"><span class="font-bold">Descripción larga:</span> <?= htmlspecialchars($p['descripcion_larga']) ?></p>
+                            <?php endif; ?>
+                        <p class="mb-2 text-gray-700">Agente: <?= htmlspecialchars($p['agente_id']) ?></p>
+                        <?php if (isset($p['descripcion'])): ?>
+                        <p class="mb-2 text-gray-700">Descripción: <?= htmlspecialchars($p['descripcion']) ?></p>
+                        <?php endif; ?>
+                        <p class="font-bold text-yellow-500 mb-2">Precio: $<?= number_format($p['precio'],0) ?></p>
+                    </div>
                 </div>
                 <?php endwhile; ?>
             </div>
+        </div>
+        <div class="flex justify-center mt-6">
+            <a href="propiedades/listar.php?tipo=venta" class="bg-blue-900 text-white px-6 py-2 rounded font-bold shadow hover:bg-blue-800 transition">Ver más propiedades en venta</a>
         </div>
     </section>
     <!-- Propiedades en Alquiler -->
@@ -162,20 +223,42 @@ $alquileres = cargar_propiedades('alquiler');
         <div class="max-w-6xl mx-auto">
             <h2 class="text-2xl font-bold mb-8 text-center">PROPIEDADES EN ALQUILER</h2>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <?php while($p = $alquileres->fetch_assoc()): ?>
+                <?php mysqli_data_seek($alquileres, 0); while($p = $alquileres->fetch_assoc()): ?>
                 <div class="bg-white text-black rounded shadow p-4 flex flex-col items-center">
-                    <?php if(!empty($p['imagen_destacada']) && file_exists($p['imagen_destacada'])): ?>
-                        <img src="<?= htmlspecialchars($p['imagen_destacada']) ?>" alt="<?= htmlspecialchars($p['titulo']) ?>" class="h-32 w-full object-cover mb-2 rounded">
-                    <?php else: ?>
-                        <img src="img/default.jpg" alt="Sin imagen" class="h-32 w-full object-cover mb-2 rounded">
-                    <?php endif; ?>
+                    <img src="<?= !empty($p['imagen_destacada']) && file_exists($p['imagen_destacada']) ? htmlspecialchars($p['imagen_destacada']) : 'img/default.jpg' ?>" alt="<?= htmlspecialchars($p['titulo']) ?>" class="h-32 w-full object-cover mb-2 rounded cursor-pointer" onclick="mostrarModal('alquiler-<?= $p['id'] ?>')">
                     <h3 class="font-bold text-lg italic mb-1"><?= htmlspecialchars($p['titulo']) ?></h3>
                     <p class="mb-2 text-center"><?= htmlspecialchars($p['descripcion_breve']) ?></p>
                     <p class="font-bold text-yellow-500 mb-2">Precio: $<?= number_format($p['precio'],0) ?></p>
-                    <a href="propiedades/detalle.php?id=<?= $p['id'] ?>" class="mt-2 block bg-blue-900 text-white px-4 py-2 rounded text-center font-semibold">VER MAS...</a>
                 </div>
                 <?php endwhile; ?>
+                <?php mysqli_data_seek($alquileres, 0); while($p = $alquileres->fetch_assoc()): ?>
+                <div id="modal-alquiler-<?= $p['id'] ?>" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+                    <div class="bg-white rounded-lg p-6 w-full max-w-md relative">
+                        <button onclick="cerrarModal('alquiler-<?= $p['id'] ?>')" class="absolute top-2 right-2 text-gray-500 hover:text-red-600 text-2xl">&times;</button>
+                        <img src="<?= !empty($p['imagen_destacada']) && file_exists($p['imagen_destacada']) ? htmlspecialchars($p['imagen_destacada']) : 'img/default.jpg' ?>" alt="<?= htmlspecialchars($p['titulo']) ?>" class="h-48 w-full object-cover mb-2 rounded">
+                        <h3 class="font-bold text-xl mb-2 text-blue-900"><?= htmlspecialchars($p['titulo']) ?></h3>
+                        <p class="mb-2 text-gray-700">Tipo: <?= htmlspecialchars($p['tipo']) ?></p>
+                        <p class="mb-2 text-gray-700">Agente: <?= htmlspecialchars($p['agente_id']) ?></p>
+                        <p class="mb-2 text-gray-700"><span class="font-bold">Descripción breve:</span> <?= htmlspecialchars($p['descripcion_breve']) ?></p>
+                        <?php if (!empty($p['descripcion_larga'])): ?>
+                        <p class="mb-2 text-gray-700"><span class="font-bold">Descripción larga:</span> <?= htmlspecialchars($p['descripcion_larga']) ?></p>
+                        <?php endif; ?>
+                        <p class="font-bold text-yellow-500 mb-2">Precio: $<?= number_format($p['precio'],0) ?></p>
+                    </div>
+                </div>
+                <?php endwhile; ?>
+        <script>
+        function mostrarModal(id) {
+            document.getElementById('modal-' + id).classList.remove('hidden');
+        }
+        function cerrarModal(id) {
+            document.getElementById('modal-' + id).classList.add('hidden');
+        }
+        </script>
             </div>
+        </div>
+        <div class="flex justify-center mt-6">
+            <a href="propiedades/listar.php?tipo=alquiler" class="bg-blue-900 text-white px-6 py-2 rounded font-bold shadow hover:bg-blue-800 transition">Ver más propiedades en alquiler</a>
         </div>
     </section>
     <!-- Footer y Contacto -->

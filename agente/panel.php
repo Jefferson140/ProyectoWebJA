@@ -1,7 +1,9 @@
 <?php
 require_once '../includes/session.php';
 require_once '../includes/functions.php';
-proteger_ruta_agente();
+if (!es_agente()) {
+    redirigir('../login.php');
+}
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -20,18 +22,15 @@ proteger_ruta_agente();
         </div>
     </header>
     <?php
-    require_once '../includes/db.php';
-    $config = $conn->query("SELECT * FROM configuracion WHERE id=1")->fetch_assoc();
-    $color_principal = $config['color_principal'] ?? '#25344b';
     ?>
     <main class="max-w-3xl mx-auto py-8">
-        <section style="background-color: <?= $color_principal ?>; color: #fff;" class="py-12 rounded-lg mb-8">
-            <h2 class="text-3xl font-bold mb-6 text-center tracking-wide">PROPIEDADES EN ALQUILER</h2>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <a href="propiedades.php" class="block bg-blue-900 text-white font-bold p-4 rounded shadow text-center hover:bg-blue-800">Gestionar Alquiler</a>
-                <a href="datos.php" class="block bg-gray-200 text-blue-900 font-bold p-4 rounded shadow text-center hover:bg-gray-300">Mis Datos</a>
-            </div>
-        </section>
+        <h1 class="text-2xl font-bold mb-6 text-blue-900">Bienvenido, Agente</h1>
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+            <a href="propiedades.php" class="block bg-blue-900 text-white font-bold p-4 rounded shadow text-center hover:bg-blue-800">Gestionar Propiedades</a>
+            <a href="datos.php" class="block bg-gray-200 text-blue-900 font-bold p-4 rounded shadow text-center hover:bg-gray-300">Mis Datos</a>
+            <a href="../propiedades/listar.php?tipo=alquiler" class="block bg-yellow-400 text-blue-900 font-bold p-4 rounded shadow text-center hover:bg-yellow-300">Ver Alquileres</a>
+            <a href="../propiedades/listar.php?tipo=venta" class="block bg-gray-100 text-blue-900 font-bold p-4 rounded shadow text-center hover:bg-gray-200">Ver Ventas</a>
+        </div>
     </main>
 </body>
 </html>

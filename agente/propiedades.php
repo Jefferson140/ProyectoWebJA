@@ -74,7 +74,11 @@ if (es_admin()) {
 <body class="bg-gray-100 min-h-screen">
     <header class="bg-blue-900 text-white p-4 flex justify-between items-center">
         <span class="font-bold text-lg">Gestionar Propiedades</span>
-        <a href="panel.php" class="bg-yellow-400 text-blue-900 px-3 py-1 rounded font-bold">Volver al panel</a>
+        <?php if(es_admin()): ?>
+            <a href="../admin/panel.php" class="bg-yellow-400 text-blue-900 px-3 py-1 rounded font-bold">Volver al panel</a>
+        <?php else: ?>
+            <a href="panel.php" class="bg-yellow-400 text-blue-900 px-3 py-1 rounded font-bold">Volver al panel</a>
+        <?php endif; ?>
     </header>
     <main class="max-w-4xl mx-auto py-8">
         <h1 class="text-2xl font-bold mb-6 text-blue-900">Mis Propiedades</h1>
