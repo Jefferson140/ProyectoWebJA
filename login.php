@@ -79,5 +79,7 @@ $color_secundario = isset($color_secundario) ? $color_secundario : '#ffe600';
         @keyframes fade-in { from { opacity: 0; transform: translateY(20px);} to { opacity: 1; transform: none; } }
         .animate-fade-in { animation: fade-in 0.8s cubic-bezier(.4,0,.2,1) both; }
     </style>
+
+    
 </body>
 </html>
