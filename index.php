@@ -174,7 +174,7 @@ $alquileres = cargar_propiedades('alquiler');
                         <p class="mb-2 text-gray-700"><span class="font-bold">Descripción larga:</span> <?= htmlspecialchars($p['descripcion_larga']) ?></p>
                         <?php endif; ?>
                         <p class="mb-2 text-gray-700"><span class="font-bold">Precio:</span> $<?= number_format($p['precio'],0) ?></p>
-                        <p class="mb-2 text-gray-700"><span class="font-bold">Agente:</span> <?= htmlspecialchars($p['agente_id']) ?></p>
+                        <p class="mb-2 text-gray-700"><span class="font-bold">Agente:</span> <?= htmlspecialchars($p['agente']) ?></p>
                         <?php if (!empty($p['ubicacion'])): ?>
                         <p class="mb-2 text-gray-700"><span class="font-bold">Ubicación:</span> <?= htmlspecialchars($p['ubicacion']) ?></p>
                         <?php endif; ?>
@@ -211,7 +211,7 @@ $alquileres = cargar_propiedades('alquiler');
                             <?php if (!empty($p['descripcion_larga'])): ?>
                             <p class="mb-2 text-gray-700"><span class="font-bold">Descripción larga:</span> <?= htmlspecialchars($p['descripcion_larga']) ?></p>
                             <?php endif; ?>
-                        <p class="mb-2 text-gray-700">Agente: <?= htmlspecialchars($p['agente_id']) ?></p>
+                        <p class="mb-2 text-gray-700">Agente: <?= htmlspecialchars($p['agente']) ?></p>
                         <?php if (isset($p['descripcion'])): ?>
                         <p class="mb-2 text-gray-700">Descripción: <?= htmlspecialchars($p['descripcion']) ?></p>
                         <?php endif; ?>
@@ -245,7 +245,7 @@ $alquileres = cargar_propiedades('alquiler');
                         <img src="<?= !empty($p['imagen_destacada']) && file_exists($p['imagen_destacada']) ? htmlspecialchars($p['imagen_destacada']) : 'img/default.jpg' ?>" alt="<?= htmlspecialchars($p['titulo']) ?>" class="h-48 w-full object-cover mb-2 rounded">
                         <h3 class="font-bold text-xl mb-2 text-blue-900"><?= htmlspecialchars($p['titulo']) ?></h3>
                         <p class="mb-2 text-gray-700">Tipo: <?= htmlspecialchars($p['tipo']) ?></p>
-                        <p class="mb-2 text-gray-700">Agente: <?= htmlspecialchars($p['agente_id']) ?></p>
+                        <p class="mb-2 text-gray-700">Agente: <?= htmlspecialchars($p['agente']) ?></p>
                         <p class="mb-2 text-gray-700"><span class="font-bold">Descripción breve:</span> <?= htmlspecialchars($p['descripcion_breve']) ?></p>
                         <?php if (!empty($p['descripcion_larga'])): ?>
                         <p class="mb-2 text-gray-700"><span class="font-bold">Descripción larga:</span> <?= htmlspecialchars($p['descripcion_larga']) ?></p>
