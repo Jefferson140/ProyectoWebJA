@@ -57,7 +57,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
                             $img_src = '../img/default.jpg';
                         }
                         ?>
-                        <img src="<?= htmlspecialchars($img_src) ?>" alt="<?= htmlspecialchars($p['titulo']) ?>" class="h-32 w-full object-cover mb-2 rounded cursor-pointer" onclick="mostrarModal(<?= $p['id'] ?>)">
+                        <img src="<?= htmlspecialchars($img_src) ?>" alt="<?= htmlspecialchars($p['titulo']) ?>" class="w-full max-h-64 object-cover rounded-xl mb-2 cursor-pointer" onclick="mostrarModal(<?= $p['id'] ?>)">
                         <h3 class="font-bold text-lg italic mb-1 text-blue-900"><?= htmlspecialchars($p['titulo']) ?></h3>
                         <p class="mb-2 text-center text-gray-700"><?= htmlspecialchars($p['descripcion_breve']) ?></p>
                         <p class="font-bold text-yellow-500 mb-2">Precio: $<?= number_format($p['precio'],0) ?></p>
