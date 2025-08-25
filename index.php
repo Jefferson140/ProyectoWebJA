@@ -156,7 +156,7 @@ $alquileres = cargar_propiedades('alquiler');
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                 <?php mysqli_data_seek($destacados, 0); while($p = $destacados->fetch_assoc()): ?>
                 <div class="bg-blue-900 border border-blue-900 rounded-lg shadow-lg p-4 flex flex-col items-center">
-                    <img src="<?= !empty($p['imagen_destacada']) && file_exists($p['imagen_destacada']) ? htmlspecialchars($p['imagen_destacada']) : 'img/default.jpg' ?>" alt="<?= htmlspecialchars($p['titulo']) ?>" class="w-full max-h-64 object-cover rounded-xl mb-2 cursor-pointer" onclick="mostrarModal('destacado-<?= $p['id'] ?>')">
+                    <img src="<?= !empty($p['imagen_destacada']) && file_exists($p['imagen_destacada']) ? htmlspecialchars($p['imagen_destacada']) : 'img/default.jpg' ?>" alt="<?= htmlspecialchars($p['titulo']) ?>" class="w-full h-56 aspect-square object-cover rounded-xl mb-2 cursor-pointer" style="min-height:14rem;max-height:14rem;min-width:14rem;max-width:100%;" onclick="mostrarModal('destacado-<?= $p['id'] ?>')">
                     <h3 class="font-bold text-lg italic mb-1"><?= htmlspecialchars($p['titulo']) ?></h3>
                     <p class="mb-2 text-center"><?= htmlspecialchars($p['descripcion_breve']) ?></p>
                     <p class="font-bold text-yellow-500 mb-2">Precio: $<?= number_format($p['precio'],0) ?></p>
@@ -195,7 +195,7 @@ $alquileres = cargar_propiedades('alquiler');
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
                 <?php mysqli_data_seek($ventas, 0); while($p = $ventas->fetch_assoc()): ?>
                 <div class="bg-gray-100 rounded shadow p-4 flex flex-col items-center">
-                    <img src="<?= !empty($p['imagen_destacada']) && file_exists($p['imagen_destacada']) ? htmlspecialchars($p['imagen_destacada']) : 'img/default.jpg' ?>" alt="<?= htmlspecialchars($p['titulo']) ?>" class="w-full max-h-64 object-cover rounded-xl mb-2 cursor-pointer" onclick="mostrarModal('venta-<?= $p['id'] ?>')">
+                    <img src="<?= !empty($p['imagen_destacada']) && file_exists($p['imagen_destacada']) ? htmlspecialchars($p['imagen_destacada']) : 'img/default.jpg' ?>" alt="<?= htmlspecialchars($p['titulo']) ?>" class="w-full h-56 aspect-square object-cover rounded-xl mb-2 cursor-pointer" style="min-height:14rem;max-height:14rem;min-width:14rem;max-width:100%;" onclick="mostrarModal('venta-<?= $p['id'] ?>')">
                     <h3 class="font-bold text-lg italic mb-1"><?= htmlspecialchars($p['titulo']) ?></h3>
                     <p class="mb-2 text-center"><?= htmlspecialchars($p['descripcion_breve']) ?></p>
                     <p class="font-bold text-blue-900 mb-2">Precio: $<?= number_format($p['precio'],0) ?></p>
@@ -232,7 +232,7 @@ $alquileres = cargar_propiedades('alquiler');
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
                 <?php mysqli_data_seek($alquileres, 0); while($p = $alquileres->fetch_assoc()): ?>
                 <div class="bg-white text-black rounded shadow p-4 flex flex-col items-center">
-                    <img src="<?= !empty($p['imagen_destacada']) && file_exists($p['imagen_destacada']) ? htmlspecialchars($p['imagen_destacada']) : 'img/default.jpg' ?>" alt="<?= htmlspecialchars($p['titulo']) ?>" class="w-full max-h-64 object-cover rounded-xl mb-2 cursor-pointer" onclick="mostrarModal('alquiler-<?= $p['id'] ?>')">
+                    <img src="<?= !empty($p['imagen_destacada']) && file_exists($p['imagen_destacada']) ? htmlspecialchars($p['imagen_destacada']) : 'img/default.jpg' ?>" alt="<?= htmlspecialchars($p['titulo']) ?>" class="w-full h-56 aspect-square object-cover rounded-xl mb-2 cursor-pointer" style="min-height:14rem;max-height:14rem;min-width:14rem;max-width:100%;" onclick="mostrarModal('alquiler-<?= $p['id'] ?>')">
                     <h3 class="font-bold text-lg italic mb-1"><?= htmlspecialchars($p['titulo']) ?></h3>
                     <p class="mb-2 text-center"><?= htmlspecialchars($p['descripcion_breve']) ?></p>
                     <p class="font-bold text-yellow-500 mb-2">Precio: $<?= number_format($p['precio'],0) ?></p>
