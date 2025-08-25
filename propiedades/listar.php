@@ -41,9 +41,12 @@ $res = $conn->query($sql);
                     <td class="p-2">$<?= number_format($p['precio'],0) ?></td>
                     <td class="p-2"><?= htmlspecialchars($p['agente']) ?></td>
                     <td class="p-2">
-                        <?php if($p['imagen_destacada']): ?>
-                        <img src="../<?= htmlspecialchars($p['imagen_destacada']) ?>" class="h-12 w-20 object-cover rounded" alt="Imagen">
-                        <?php endif; ?>
+                        <?php 
+                        $img_path = !empty($p['imagen_destacada']) && file_exists('../'.$p['imagen_destacada']) 
+                            ? '../'.htmlspecialchars($p['imagen_destacada']) 
+                            : '../img/default.jpg';
+                        ?>
+                        <img src="<?= $img_path ?>" class="h-12 w-20 object-cover rounded" alt="Imagen">
                     </td>
                     <td class="p-2"><a href="detalle.php?id=<?= $p['id'] ?>" class="text-blue-900 font-bold">Ver más</a></td>
                 </tr>
@@ -53,7 +56,12 @@ $res = $conn->query($sql);
         <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
             <?php mysqli_data_seek($res, 0); while($p = $res->fetch_assoc()): ?>
             <div class="bg-white rounded shadow p-4 flex flex-col items-center">
-                <img src="<?= htmlspecialchars($p['imagen_destacada']) ?>" alt="<?= htmlspecialchars($p['titulo']) ?>" class="h-32 w-full object-cover mb-2 rounded">
+                <?php 
+                $img_path = !empty($p['imagen_destacada']) && file_exists('../'.$p['imagen_destacada']) 
+                    ? '../'.htmlspecialchars($p['imagen_destacada']) 
+                    : '../img/default.jpg';
+                ?>
+                <img src="<?= $img_path ?>" alt="<?= htmlspecialchars($p['titulo']) ?>" class="h-32 w-full object-cover mb-2 rounded">
                 <h3 class="font-bold text-lg italic mb-1 text-blue-900"><?= htmlspecialchars($p['titulo']) ?></h3>
                 <p class="mb-2 text-center text-gray-700"><?= htmlspecialchars($p['descripcion_breve']) ?></p>
                 <p class="font-bold text-yellow-500 mb-2">Precio: $<?= number_format($p['precio'],0) ?></p>

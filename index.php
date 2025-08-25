@@ -158,13 +158,17 @@ $alquileres = cargar_propiedades('alquiler');
         </div>
     </section>
     <!-- Propiedades en Alquiler -->
-    <section style="background-color: <?= $color_secundario ?>; color: #fff;" class="py-12">
+    <section style="background-color: <?= $color_principal ?>; color: #fff;" class="py-12">
         <div class="max-w-6xl mx-auto">
             <h2 class="text-2xl font-bold mb-8 text-center">PROPIEDADES EN ALQUILER</h2>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
                 <?php while($p = $alquileres->fetch_assoc()): ?>
                 <div class="bg-white text-black rounded shadow p-4 flex flex-col items-center">
-                    <img src="<?= htmlspecialchars($p['imagen_destacada']) ?>" alt="<?= htmlspecialchars($p['titulo']) ?>" class="h-32 w-full object-cover mb-2 rounded">
+                    <?php if(!empty($p['imagen_destacada']) && file_exists($p['imagen_destacada'])): ?>
+                        <img src="<?= htmlspecialchars($p['imagen_destacada']) ?>" alt="<?= htmlspecialchars($p['titulo']) ?>" class="h-32 w-full object-cover mb-2 rounded">
+                    <?php else: ?>
+                        <img src="img/default.jpg" alt="Sin imagen" class="h-32 w-full object-cover mb-2 rounded">
+                    <?php endif; ?>
                     <h3 class="font-bold text-lg italic mb-1"><?= htmlspecialchars($p['titulo']) ?></h3>
                     <p class="mb-2 text-center"><?= htmlspecialchars($p['descripcion_breve']) ?></p>
                     <p class="font-bold text-yellow-500 mb-2">Precio: $<?= number_format($p['precio'],0) ?></p>
@@ -208,7 +212,12 @@ $alquileres = cargar_propiedades('alquiler');
             </div>
         </div>
         <div class="flex flex-col items-center justify-center">
-            <form method="post" action="contacto.php" class="bg-gray-100 rounded-lg p-4 shadow-md w-full max-w-xs mx-auto">
+            <?php if(isset($_GET['contacto']) && $_GET['contacto'] === 'ok'): ?>
+                <div class="bg-green-100 text-green-700 p-2 mb-2 rounded text-center font-semibold w-full max-w-xs mx-auto">¡Correo enviado correctamente!</div>
+            <?php elseif(isset($_GET['contacto']) && $_GET['contacto'] === 'error'): ?>
+                <div class="bg-red-100 text-red-700 p-2 mb-2 rounded text-center font-semibold w-full max-w-xs mx-auto">No se pudo enviar el correo. Intente de nuevo.</div>
+            <?php endif; ?>
+            <form method="post" action="correo.php" class="bg-gray-100 rounded-lg p-4 shadow-md w-full max-w-xs mx-auto">
                 <h3 class="text-center font-bold mb-2">Contactanos</h3>
                 <div class="mb-2">
                     <input type="text" name="nombre" placeholder="Nombre" class="w-full px-2 py-1 border rounded" required>

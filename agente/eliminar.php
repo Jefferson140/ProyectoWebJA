@@ -6,7 +6,11 @@ if (!es_agente() && !es_admin()) redirigir('../login.php');
 $id = $_GET['id'] ?? 0;
 $id_agente = $_SESSION['id'];
 if ($id) {
-    $conn->query("DELETE FROM propiedades WHERE id=$id AND agente_id=$id_agente");
+    if (es_admin()) {
+        $conn->query("DELETE FROM propiedades WHERE id=$id");
+    } else {
+        $conn->query("DELETE FROM propiedades WHERE id=$id AND agente_id=$id_agente");
+    }
     header('Location: propiedades.php');
     exit;
 }

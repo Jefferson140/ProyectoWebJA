@@ -161,11 +161,7 @@ if ($config && $config->num_rows > 0) {
                     <label class="font-semibold">Color secundario:</label>
                     <input type="color" name="color_secundario" value="<?= htmlspecialchars($config['color_secundario']) ?>" class="border-2 border-gray-300 rounded w-16 h-10">
                     <div class="col-span-2 flex justify-end mt-2">
-                        <form method="post" style="display:inline;">
-                            <input type="hidden" name="color_principal" value="#25344b">
-                            <input type="hidden" name="color_secundario" value="#ffe600">
-                            <button type="submit" class="bg-gray-300 text-blue-900 px-4 py-2 rounded font-bold">Volver a colores por defecto</button>
-                        </form>
+                        <button type="button" class="bg-gray-300 text-blue-900 px-4 py-2 rounded font-bold" onclick="document.querySelector('input[name=\'color_principal\']').value='#25344b';document.querySelector('input[name=\'color_secundario\']').value='#ffe600';">Volver a colores por defecto</button>
                     </div>
                     <label class="font-semibold">Ícono principal:</label>
                     <input type="file" name="icono_principal" accept="image/*" class="mb-2">
