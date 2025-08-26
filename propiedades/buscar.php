@@ -61,6 +61,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
                         <h3 class="font-bold text-lg italic mb-1 text-blue-900"><?= htmlspecialchars($p['titulo']) ?></h3>
                         <p class="mb-2 text-center text-gray-700"><?= htmlspecialchars($p['descripcion_breve']) ?></p>
                         <p class="font-bold text-yellow-500 mb-2">Precio: $<?= number_format($p['precio'],0) ?></p>
+                        <?php if (!empty($p['ubicacion'])): ?>
+                        <p class="mb-2 text-gray-700"><span class="font-bold">Ubicación:</span> <?= htmlspecialchars($p['ubicacion']) ?></p>
+                        <?php endif; ?>
+                        <?php if (!empty($p['url_mapa'])): ?>
+                        <p class="mb-2 text-gray-700"><span class="font-bold">Mapa:</span> <a href="<?= htmlspecialchars($p['url_mapa']) ?>" target="_blank" class="text-blue-900 underline">Ver mapa</a></p>
+                        <?php endif; ?>
                     <!-- Modal para mostrar detalles -->
                     <div id="modal-<?= $p['id'] ?>" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
                         <div class="bg-white rounded-lg shadow-lg p-6 max-w-md w-full relative">
@@ -76,6 +82,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
                             <p class="mb-2 text-gray-700"><span class="font-bold">Agente:</span> <?= htmlspecialchars($p['agente']) ?></p>
                             <?php if (!empty($p['ubicacion'])): ?>
                             <p class="mb-2 text-gray-700"><span class="font-bold">Ubicación:</span> <?= htmlspecialchars($p['ubicacion']) ?></p>
+                            <?php endif; ?>
+                            <?php if (!empty($p['url_mapa'])): ?>
+                            <p class="mb-2 text-gray-700"><span class="font-bold">Mapa:</span> <a href="<?= htmlspecialchars($p['url_mapa']) ?>" target="_blank" class="text-blue-900 underline">Ver mapa</a></p>
                             <?php endif; ?>
                             <p class="mb-2 text-gray-700"><span class="font-bold">Fecha de creación:</span> <?= htmlspecialchars($p['fecha_creacion']) ?></p>
                         </div>

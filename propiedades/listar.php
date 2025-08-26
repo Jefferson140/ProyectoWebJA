@@ -77,10 +77,16 @@ $res = $conn->query($sql);
                     ? '../'.htmlspecialchars($p['imagen_destacada']) 
                     : '../img/default.jpg';
                 ?>
-                    <img src="<?= $img_path ?>" alt="<?= htmlspecialchars($p['titulo']) ?>" class="w-full h-56 aspect-square object-cover rounded-xl mb-2 cursor-pointer" style="min-height:14rem;max-height:14rem;min-width:14rem;max-width:100%;" onclick="mostrarModal(<?= $p['id'] ?>)">
+                <img src="<?= $img_path ?>" alt="<?= htmlspecialchars($p['titulo']) ?>" class="w-full h-56 aspect-square object-cover rounded-xl mb-2 cursor-pointer" style="min-height:14rem;max-height:14rem;min-width:14rem;max-width:100%;" onclick="mostrarModal(<?= $p['id'] ?>)">
                 <h3 class="font-bold text-lg italic mb-1 text-blue-900"><?= htmlspecialchars($p['titulo']) ?></h3>
                 <p class="mb-2 text-center text-gray-700"><?= htmlspecialchars($p['descripcion_breve']) ?></p>
                 <p class="font-bold text-yellow-500 mb-2">Precio: $<?= number_format($p['precio'],0) ?></p>
+                <?php if (!empty($p['ubicacion'])): ?>
+                <p class="mb-2 text-gray-700"><span class="font-bold">Ubicación:</span> <?= htmlspecialchars($p['ubicacion']) ?></p>
+                <?php endif; ?>
+                <?php if (!empty($p['url_mapa'])): ?>
+                <p class="mb-2 text-gray-700"><span class="font-bold">Mapa:</span> <a href="<?= htmlspecialchars($p['url_mapa']) ?>" target="_blank" class="text-blue-900 underline">Ver mapa</a></p>
+                <?php endif; ?>
             </div>
             <?php endwhile; ?>
             <?php mysqli_data_seek($res, 0); while($p = $res->fetch_assoc()): ?>
@@ -98,6 +104,9 @@ $res = $conn->query($sql);
                     <p class="mb-2 text-gray-700"><span class="font-bold">Agente:</span> <?= htmlspecialchars($p['agente']) ?></p>
                     <?php if (!empty($p['ubicacion'])): ?>
                     <p class="mb-2 text-gray-700"><span class="font-bold">Ubicación:</span> <?= htmlspecialchars($p['ubicacion']) ?></p>
+                    <?php endif; ?>
+                    <?php if (!empty($p['url_mapa'])): ?>
+                    <p class="mb-2 text-gray-700"><span class="font-bold">Mapa:</span> <a href="<?= htmlspecialchars($p['url_mapa']) ?>" target="_blank" class="text-blue-900 underline">Ver mapa</a></p>
                     <?php endif; ?>
                     <p class="mb-2 text-gray-700"><span class="font-bold">Fecha de creación:</span> <?= htmlspecialchars($p['fecha_creacion']) ?></p>
                 </div>

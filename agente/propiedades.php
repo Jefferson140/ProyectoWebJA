@@ -13,6 +13,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['agregar'])) {
     $titulo = $_POST['titulo'] ?? '';
     $descripcion_breve = $_POST['descripcion_breve'] ?? '';
     $precio = $_POST['precio'] ?? '';
+    $ubicacion = $_POST['ubicacion'] ?? '';
+    $url_mapa = $_POST['url_mapa'] ?? '';
     $descripcion_larga = $_POST['descripcion'] ?? '';
     // Validaciones
     if (!$tipo) $errores['tipo'] = 'Seleccione el tipo.';
@@ -20,6 +22,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['agregar'])) {
     if (!$descripcion_breve) $errores['descripcion_breve'] = 'Ingrese la descripción breve.';
     if (!$precio || !is_numeric($precio) || $precio <= 0) $errores['precio'] = 'Ingrese un precio válido.';
     if (!$descripcion_larga) $errores['descripcion'] = 'Ingrese la descripción completa.';
+    if (!$ubicacion) $errores['ubicacion'] = 'Ingrese la ubicación.';
+    if (!$url_mapa) $errores['url_mapa'] = 'Ingrese la URL del mapa.';
     // Validación de imagen
     $imagen_destacada = '';
     $max_size = 2 * 1024 * 1024; // 2MB
@@ -33,10 +37,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['agregar'])) {
         }
     }
     if (empty($errores)) {
-        $sql = "INSERT INTO propiedades (tipo, destacada, titulo, descripcion_breve, precio, agente_id, imagen_destacada, descripcion_larga) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+        $sql = "INSERT INTO propiedades (tipo, destacada, titulo, descripcion_breve, precio, agente_id, imagen_destacada, descripcion_larga, ubicacion, url_mapa) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         $stmt = $conn->prepare($sql);
         $stmt->bind_param(
-            "sississs",
+            "sississsss",
             $tipo,
             $destacada,
             $titulo,
@@ -44,7 +48,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['agregar'])) {
             $precio,
             $id_agente,
             $imagen_destacada,
-            $descripcion_larga
+            $descripcion_larga,
+            $ubicacion,
+            $url_mapa
         );
         if ($stmt->execute()) {
             $mensaje = 'Propiedad agregada correctamente.';
@@ -113,6 +119,16 @@ if (es_admin()) {
                     <label class="block font-semibold mb-2 text-blue-900" title="Precio de la propiedad">Precio:</label>
                     <input type="number" name="precio" class="w-full px-3 py-2 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-blue-500" required>
                     <?php if(isset($errores['precio'])): ?><div class="text-red-600 text-sm mt-1"><?= $errores['precio'] ?></div><?php endif; ?>
+                </div>
+                <div>
+                    <label class="block font-semibold mb-2 text-blue-900" title="Ubicación de la propiedad">Ubicación:</label>
+                    <input type="text" name="ubicacion" class="w-full px-3 py-2 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-blue-500" required>
+                    <?php if(isset($errores['ubicacion'])): ?><div class="text-red-600 text-sm mt-1"><?= $errores['ubicacion'] ?></div><?php endif; ?>
+                </div>
+                <div>
+                    <label class="block font-semibold mb-2 text-blue-900" title="URL del mapa">URL Mapa:</label>
+                    <input type="text" name="url_mapa" class="w-full px-3 py-2 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-blue-500" required>
+                    <?php if(isset($errores['url_mapa'])): ?><div class="text-red-600 text-sm mt-1"><?= $errores['url_mapa'] ?></div><?php endif; ?>
                 </div>
                 <div>
                     <label class="block font-semibold mb-2 text-blue-900" title="Imagen principal de la propiedad">Imagen destacada:</label>
