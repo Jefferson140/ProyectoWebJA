@@ -31,27 +31,44 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Editar Usuario</title>
-    <link href="../css/tailwind.css" rel="stylesheet">
+   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
 </head>
-<body class="bg-gray-100 min-h-screen">
-    <main class="max-w-4xl mx-auto py-8">
-        <h1 class="text-2xl font-bold mb-6 text-blue-900">Editar Usuario</h1>
-        <?php if($mensaje): ?><div class="bg-green-100 text-green-700 p-2 mb-2 rounded"><?= $mensaje ?></div><?php endif; ?>
-        <form method="post" class="bg-white p-4 rounded shadow mb-8">
-            <div class="grid grid-cols-2 gap-4 mb-2">
-                <input type="text" name="nombre" value="<?= htmlspecialchars($u['nombre']) ?>" placeholder="Nombre" class="border rounded px-2 py-1" required>
-                <input type="text" name="telefono" value="<?= htmlspecialchars($u['telefono']) ?>" placeholder="Teléfono" class="border rounded px-2 py-1">
-                <input type="text" name="correo" value="<?= htmlspecialchars($u['correo']) ?>" placeholder="Correo" class="border rounded px-2 py-1">
-                <input type="email" name="email" value="<?= htmlspecialchars($u['email']) ?>" placeholder="Email" class="border rounded px-2 py-1">
-                <input type="text" name="usuario" value="<?= htmlspecialchars($u['usuario']) ?>" placeholder="Usuario" class="border rounded px-2 py-1" required>
-                <select name="privilegio" class="border rounded px-2 py-1">
+<body class="bg-gray-50 min-h-screen flex items-center justify-center">
+    <main class="w-full max-w-lg bg-white rounded-xl shadow-lg p-8">
+        <h1 class="text-3xl font-bold mb-8 text-blue-900 text-center">Editar Usuario</h1>
+        <?php if($mensaje): ?>
+            <div class="mb-4 px-4 py-3 rounded-lg <?= strpos($mensaje, 'correctamente') ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700' ?>">
+                <?= $mensaje ?>
+            </div>
+        <?php endif; ?>
+        <form method="post" class="space-y-6">
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">Nombre <span class="text-red-500">*</span></label>
+                <input type="text" name="nombre" value="<?= htmlspecialchars($u['nombre']) ?>" class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-900" required>
+            </div>
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">Teléfono</label>
+                <input type="text" name="telefono" value="<?= htmlspecialchars($u['telefono']) ?>" class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-900">
+            </div>
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">Correo</label>
+                <input type="text" name="correo" value="<?= htmlspecialchars($u['correo']) ?>" class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-900">
+            </div>
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">Email</label>
+                <input type="email" name="email" value="<?= htmlspecialchars($u['email']) ?>" class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-900">
+            </div>
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">Usuario <span class="text-red-500">*</span></label>
+                <input type="text" name="usuario" value="<?= htmlspecialchars($u['usuario']) ?>" class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-900" required>
+            </div>
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">Privilegio</label>
+                <select name="privilegio" class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-900">
                     <option value="administrador" <?= $u['privilegio']=='administrador'?'selected':'' ?>>Administrador</option>
                     <option value="agente" <?= $u['privilegio']=='agente'?'selected':'' ?>>Agente de Ventas</option>
                 </select>
             </div>
-            <button type="submit" class="bg-blue-900 text-white px-4 py-2 rounded font-bold">Actualizar Usuario</button>
+            <button type="submit" class="w-full bg-blue-900 text-white py-2 rounded-lg font-bold hover:bg-blue-800 transition">Actualizar Usuario</button>
         </form>
-        <a href="usuarios.php" class="block mt-6 text-blue-900 font-bold">Volver a usuarios</a>
-    </main>
-</body>
-</html>
+        <a href="usuarios.php" class="block mt-8 text-blue-900 font-bold text-center hover:underline">Volver
