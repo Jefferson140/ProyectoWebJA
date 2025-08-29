@@ -25,6 +25,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (!$descripcion_breve) $errores['descripcion_breve'] = 'Ingrese la descripción breve.';
     if (!$precio || !is_numeric($precio) || $precio <= 0) $errores['precio'] = 'Ingrese un precio válido.';
     if (!$descripcion_larga) $errores['descripcion_larga'] = 'Ingrese la descripción larga.';
+    // El campo mapa no es obligatorio
     // Validación de imagen
     $max_size = 2 * 1024 * 1024; // 2MB
     $allowed_types = ['image/jpeg','image/png','image/gif','image/webp'];

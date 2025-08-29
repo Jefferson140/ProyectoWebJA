@@ -23,7 +23,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['agregar'])) {
     if (!$precio || !is_numeric($precio) || $precio <= 0) $errores['precio'] = 'Ingrese un precio válido.';
     if (!$descripcion_larga) $errores['descripcion'] = 'Ingrese la descripción completa.';
     if (!$ubicacion) $errores['ubicacion'] = 'Ingrese la ubicación.';
-    if (!$mapa) $errores['url_mapa'] = 'Ingrese la URL del mapa.';
+    // El campo mapa no es obligatorio
     // Validación de imagen
     $imagen_destacada = '';
     $max_size = 2 * 1024 * 1024; // 2MB
