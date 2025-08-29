@@ -76,8 +76,8 @@ $alquileres = cargar_propiedades('alquiler');
                     <nav class="flex gap-6 font-bold text-base mt-1">
                         <a href="index.php" class="text-yellow-400">INICIO</a>
                         <a href="#quienes" class="text-yellow-400">QUINES SOMOS</a>
-                        <a href="propiedades/listar.php?tipo=alquiler" class="text-yellow-400">ALQUILERES</a>
-                        <a href="propiedades/listar.php?tipo=venta" class="text-yellow-400">VENTAS</a>
+                        <a href="#alquileres" class="text-yellow-400">ALQUILERES</a>
+                        <a href="#ventas" class="text-yellow-400">VENTAS</a>
                         <a href="#contacto" class="text-yellow-400">CONTACTENOS</a>
                     </nav>
                     <div class="flex items-center gap-2 mt-2">
@@ -189,7 +189,7 @@ $alquileres = cargar_propiedades('alquiler');
         </div>
     </section>
     <!-- Propiedades en Venta -->
-    <section style="background-color: #fff; color: <?= $color_principal ?>;" class="py-12">
+    <section id="ventas" style="background-color: #fff; color: <?= $color_principal ?>;" class="py-12">
         <div class="max-w-6xl mx-auto">
             <h2 class="text-2xl font-bold mb-8 text-center text-blue-900">PROPIEDADES EN VENTA</h2>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -226,7 +226,7 @@ $alquileres = cargar_propiedades('alquiler');
         </div>
     </section>
     <!-- Propiedades en Alquiler -->
-    <section style="background-color: <?= $color_principal ?>; color: #fff;" class="py-12">
+    <section id="alquileres" style="background-color: <?= $color_principal ?>; color: #fff;" class="py-12">
         <div class="max-w-6xl mx-auto">
             <h2 class="text-2xl font-bold mb-8 text-center">PROPIEDADES EN ALQUILER</h2>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8">

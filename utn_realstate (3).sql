@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 25-08-2025 a las 17:05:55
+-- Tiempo de generación: 26-08-2025 a las 18:32:52
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -51,7 +51,7 @@ CREATE TABLE `configuracion` (
 --
 
 INSERT INTO `configuracion` (`id`, `color_principal`, `color_secundario`, `icono_principal`, `icono_blanco`, `imagen_banner`, `mensaje_banner`, `quienes_somos`, `imagen_quienes_somos`, `facebook`, `instagram`, `youtube`, `direccion`, `telefono`, `email`, `img_quienes`) VALUES
-(1, '#25344b', '#ffe600', NULL, NULL, NULL, '', '', NULL, '', '', '', '', '', '', NULL);
+(1, '#25344b', '#ffe600', NULL, NULL, NULL, 'Permitenos realizar tus cambios en nuestra empresa', '', NULL, '', '', '', '', '', '', NULL);
 
 -- --------------------------------------------------------
 
@@ -67,6 +67,14 @@ CREATE TABLE `mensajes` (
   `mensaje` text NOT NULL,
   `fecha` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Volcado de datos para la tabla `mensajes`
+--
+
+INSERT INTO `mensajes` (`id`, `nombre`, `email`, `telefono`, `mensaje`, `fecha`) VALUES
+(1, 'Jefferson', 'rodriguezgonzalezjefferson@gmail.com', '85702873', 'son pruebas', '2025-08-26 03:31:39'),
+(2, 'Jefferson', 'rodriguezgonzalezjefferson@gmail.com', '85702873', 'son pruebas', '2025-08-26 03:31:41');
 
 -- --------------------------------------------------------
 
@@ -94,12 +102,13 @@ CREATE TABLE `propiedades` (
 --
 
 INSERT INTO `propiedades` (`id`, `tipo`, `destacada`, `titulo`, `descripcion_breve`, `precio`, `agente_id`, `imagen_destacada`, `descripcion_larga`, `mapa`, `ubicacion`, `fecha_creacion`) VALUES
-(1, 'alquiler', 1, 'Casa', '4 cuartos ', 130000.00, 1, 'img/prop_1756134010_657.jpg', 'Casa en buen estado ', '', 'Barrio las Palmas', '2025-08-19 06:06:34'),
-(2, 'alquiler', 0, 'Prueba', '2 cuartos y baño ', 100000.00, 1, 'img/prop_1756133960_323.jpg', 'prueba', '', '', '2025-08-23 06:29:05'),
-(4, 'venta', 0, 'Apartamento ', '2 cuartos ', 100000.00, 1, 'img/prop_1756133942_437.jpg', 'No se permiten mascotas ', '', '', '2025-08-24 23:00:10'),
-(5, 'alquiler', 1, 'Casa 2 Plantas', 'Barrio lujoso en Cañas Guanacaste ', 250000.00, 1, 'img/prop_1756134109_370.jpg', '4 cuartos, 2 baños, cochera bajo techo', NULL, NULL, '2025-08-25 15:01:49'),
+(1, 'alquiler', 1, 'Casa', '4 cuartos ', 130000.00, 1, 'img/prop_1756151308_580.jpg', 'Casa en buen estado ', '', 'Barrio las Palmas', '2025-08-19 06:06:34'),
+(2, 'alquiler', 0, 'Prueba', '2 cuartos y baño ', 100000.00, 1, 'img/prop_1756151530_785.jpg', 'prueba', '', '', '2025-08-23 06:29:05'),
+(4, 'venta', 0, 'Apartamento ', '2 cuartos ', 100000.00, 1, 'img/prop_1756151658_753.jpg', 'No se permiten mascotas ', '', '', '2025-08-24 23:00:10'),
+(5, 'alquiler', 1, 'Casa 2 Plantas', 'Barrio lujoso en Cañas Guanacaste ', 250000.00, 1, 'img/prop_1756151426_520.jpg', '4 cuartos, 2 baños, cochera bajo techo', '', '', '2025-08-25 15:01:49'),
 (6, 'alquiler', 1, 'Casa', 'Barrio lujoso en Cañas Guanacaste ', 15000000.00, 1, 'img/prop_1756134193_925.jpg', 'Casa lujosa en un barrio tranquilo, 4 cuartos,3 baños,cochera, piscina ', NULL, NULL, '2025-08-25 15:03:13'),
-(7, 'venta', 0, 'Casa en la playa ', 'Casa en Playa Hermosa', 25000000.00, 1, 'img/prop_1756134315_116.jpg', '50 metros de la playa, ubicacion perfecta para turistas', NULL, NULL, '2025-08-25 15:05:15');
+(7, 'venta', 0, 'Casa en la playa ', 'Casa en Playa Hermosa', 25000000.00, 1, 'img/prop_1756134315_116.jpg', '50 metros de la playa, ubicacion perfecta para turistas', NULL, NULL, '2025-08-25 15:05:15'),
+(8, 'venta', 1, 'Casa de playa ', 'Casa en Playa Hermosa en residencial lujoso', 50000000.00, 3, 'img/prop_1756152289_996.jpg', 'se encuentra en el residencial mas lujoso de la zona, cuenta con detallados impresionantes ', NULL, NULL, '2025-08-25 20:04:49');
 
 -- --------------------------------------------------------
 
@@ -126,9 +135,10 @@ CREATE TABLE `usuarios` (
 --
 
 INSERT INTO `usuarios` (`id`, `nombre`, `telefono`, `correo`, `email`, `usuario`, `contrasena`, `privilegio`, `imagen`, `color_principal`, `color_secundario`) VALUES
-(1, 'Admin', '8890-2030', 'admin@utnrealstate.com', 'admin@utnrealstate.com', 'Admin', '$2y$10$l5s4hikdFLSlDwEvenc0V.84z9Y1orBVFZ4wsKBwmOKMSKBLaNlBq', 'administrador', NULL, '#25344b', '#ffe600'),
+(1, 'Admin', '8890-2030', 'admin@utnrealstate.com', 'admin@utnrealstate.com', 'Admin', '$2y$10$ZhJgY8knL4iJ95dF2/NyM.oGt/3KQoy46NSK4kDY6m5ozyRYxchxC', 'administrador', NULL, '#25344b', '#ffe600'),
 (2, 'Andres', '85702873', 'hhh@gmail.com', 'rodriguezgonzalezjefferson@gmail.com', 'Andres', '$2y$10$9jzXtgXAIwUsOKouwnTTC.zy8D7DMdFkvp4WFtgHwohgJzdeK49dm', 'agente', NULL, '#25344b', '#ffe600'),
-(3, 'Jefferson', '8570-2873', 'hh2@gmail.com', 'compu2025178@gmail.com', 'Jefferson', '$2y$10$kEvWvj7Mi6oXYMj1o.jroeZkFngMee5bqOK1AuYP0REoqWcoO5cc6', 'agente', NULL, '#25344b', '#ffe600');
+(3, 'Jefferson', '8570-2873', 'hh2@gmail.com', 'compu2025178@gmail.com', 'Jefferson', '$2y$10$kEvWvj7Mi6oXYMj1o.jroeZkFngMee5bqOK1AuYP0REoqWcoO5cc6', 'agente', NULL, '#25344b', '#ffe600'),
+(4, 'Andres', '86702873', 'hh2@gmail.com', '', 'Andres01', '$2y$10$UpDPqHelxtboFvlF2aNU9ukAe7LtFgEIISSBQu0KdlUSBHbZqwuoK', 'administrador', NULL, '#25344b', '#ffe600');
 
 --
 -- Índices para tablas volcadas
@@ -174,19 +184,19 @@ ALTER TABLE `configuracion`
 -- AUTO_INCREMENT de la tabla `mensajes`
 --
 ALTER TABLE `mensajes`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT de la tabla `propiedades`
 --
 ALTER TABLE `propiedades`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT de la tabla `usuarios`
 --
 ALTER TABLE `usuarios`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- Restricciones para tablas volcadas

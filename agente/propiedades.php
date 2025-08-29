@@ -14,7 +14,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['agregar'])) {
     $descripcion_breve = $_POST['descripcion_breve'] ?? '';
     $precio = $_POST['precio'] ?? '';
     $ubicacion = $_POST['ubicacion'] ?? '';
-    $url_mapa = $_POST['url_mapa'] ?? '';
+    $mapa = $_POST['url_mapa'] ?? '';
     $descripcion_larga = $_POST['descripcion'] ?? '';
     // Validaciones
     if (!$tipo) $errores['tipo'] = 'Seleccione el tipo.';
@@ -23,7 +23,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['agregar'])) {
     if (!$precio || !is_numeric($precio) || $precio <= 0) $errores['precio'] = 'Ingrese un precio válido.';
     if (!$descripcion_larga) $errores['descripcion'] = 'Ingrese la descripción completa.';
     if (!$ubicacion) $errores['ubicacion'] = 'Ingrese la ubicación.';
-    if (!$url_mapa) $errores['url_mapa'] = 'Ingrese la URL del mapa.';
+    if (!$mapa) $errores['url_mapa'] = 'Ingrese la URL del mapa.';
     // Validación de imagen
     $imagen_destacada = '';
     $max_size = 2 * 1024 * 1024; // 2MB
@@ -37,7 +37,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['agregar'])) {
         }
     }
     if (empty($errores)) {
-        $sql = "INSERT INTO propiedades (tipo, destacada, titulo, descripcion_breve, precio, agente_id, imagen_destacada, descripcion_larga, ubicacion, url_mapa) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        $sql = "INSERT INTO propiedades (tipo, destacada, titulo, descripcion_breve, precio, agente_id, imagen_destacada, descripcion_larga, ubicacion, mapa) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         $stmt = $conn->prepare($sql);
         $stmt->bind_param(
             "sississsss",
@@ -50,7 +50,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['agregar'])) {
             $imagen_destacada,
             $descripcion_larga,
             $ubicacion,
-            $url_mapa
+            $mapa
         );
         if ($stmt->execute()) {
             $mensaje = 'Propiedad agregada correctamente.';

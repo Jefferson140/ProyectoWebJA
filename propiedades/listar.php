@@ -85,7 +85,7 @@ $res = $conn->query($sql);
                 <p class="mb-2 text-gray-700"><span class="font-bold">Ubicación:</span> <?= htmlspecialchars($p['ubicacion']) ?></p>
                 <?php endif; ?>
                 <?php if (!empty($p['url_mapa'])): ?>
-                <p class="mb-2 text-gray-700"><span class="font-bold">Mapa:</span> <a href="<?= htmlspecialchars($p['url_mapa']) ?>" target="_blank" class="text-blue-900 underline">Ver mapa</a></p>
+                <p class="mb-2 text-gray-700"><span class="font-bold">Mapa:</span> <a href="<?= htmlspecialchars($p['mapa']) ?>" target="_blank" class="text-blue-900 underline">Ver mapa</a></p>
                 <?php endif; ?>
             </div>
             <?php endwhile; ?>
@@ -106,7 +106,7 @@ $res = $conn->query($sql);
                     <p class="mb-2 text-gray-700"><span class="font-bold">Ubicación:</span> <?= htmlspecialchars($p['ubicacion']) ?></p>
                     <?php endif; ?>
                     <?php if (!empty($p['url_mapa'])): ?>
-                    <p class="mb-2 text-gray-700"><span class="font-bold">Mapa:</span> <a href="<?= htmlspecialchars($p['url_mapa']) ?>" target="_blank" class="text-blue-900 underline">Ver mapa</a></p>
+                    <p class="mb-2 text-gray-700"><span class="font-bold">Mapa:</span> <a href="<?= htmlspecialchars($p['mapa']) ?>" target="_blank" class="text-blue-900 underline">Ver mapa</a></p>
                     <?php endif; ?>
                     <p class="mb-2 text-gray-700"><span class="font-bold">Fecha de creación:</span> <?= htmlspecialchars($p['fecha_creacion']) ?></p>
                 </div>
