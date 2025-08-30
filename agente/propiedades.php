@@ -127,7 +127,7 @@ if (es_admin()) {
                 </div>
                 <div>
                     <label class="block font-semibold mb-2 text-blue-900" title="URL del mapa">URL Mapa:</label>
-                    <input type="text" name="url_mapa" class="w-full px-3 py-2 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-blue-500" required>
+                    <input type="text" name="url_mapa" class="w-full px-3 py-2 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-blue-500">
                     <?php if(isset($errores['url_mapa'])): ?><div class="text-red-600 text-sm mt-1"><?= $errores['url_mapa'] ?></div><?php endif; ?>
                 </div>
                 <div>
